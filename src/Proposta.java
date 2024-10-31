@@ -41,7 +41,10 @@ public class Proposta {
 
     @Override
     public String toString() {
-        return "ID: " + id + "; Richiesta: " + richiesta.getId() + "; OreRichieste: " + oreRichieste + "; Offerta: " + offerta.getId() + "; OreOfferte: " + oreOfferte + "; Stato: " + stato + "; idFruitore: " + idFruitore;
+        LocalDateTime currentTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        String timestamp = currentTime.format(formatter);
+        return "ID: " + id + "; Richiesta: " + richiesta.getId() + "; OreRichieste: " + oreRichieste + "; Offerta: " + offerta.getId() + "; OreOfferte: " + oreOfferte + "; Stato: " + stato + "; Ora: " + timestamp;
     }
 
     public int getId(){
