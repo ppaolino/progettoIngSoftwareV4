@@ -1,0 +1,2 @@
+0;paolof;paolo;paolo@gmail.com;comprensorio bresciano
+1;fruitore;fruitore;fruitore@gmail.com;comprensorio bresciano

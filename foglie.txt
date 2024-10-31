@@ -1,0 +1,14 @@
+ID: 0; Nome: lezioni di solfeggio; Fattore: 0.0; ID fattore: 0
+ID: 1; Nome: lezioni di storia musicale; Fattore: 0.0; ID fattore: 0
+ID: 2; Nome: lezioni di chitarra per principianti; Fattore: 0.0; ID fattore: 0
+ID: 3; Nome: lezioni di pianoforte per principianti; Fattore: 0.0; ID fattore: 0
+ID: 4; Nome: lezioni di pianoforte intermedie; Fattore: 0.0; ID fattore: 0
+ID: 5; Nome: sessione di sollevamento pesi; Fattore: 0.0; ID fattore: 0
+ID: 6; Nome: sessione di pilates; Fattore: 0.0; ID fattore: 0
+ID: 7; Nome: sessione di yoga; Fattore: 0.0; ID fattore: 0
+ID: 8; Nome: lezione di pugilato; Fattore: 0.0; ID fattore: 0
+ID: 9; Nome: ripetizioni di matematica per il biennio; Fattore: 1.05; ID fattore: 1
+ID: 10; Nome: ripetizioni di matematica per il triennio; Fattore: 1.3; ID fattore: 9
+ID: 11; Nome: ripetizioni di inglese b1; Fattore: 1.0; ID fattore: 9
+ID: 12; Nome: ripetizioni di inglese b2; Fattore: 0.8; ID fattore: 9
+ID: 13; Nome: ripetizioni di informatica; Fattore: 2.0; ID fattore: 2
