@@ -554,4 +554,61 @@ public final class Model {
     public ArrayList<Integer> getOreConvertite(int id, int ore){
         return listaF.getOreConvertite(id, ore);
     }
+
+    public Boolean controlloCascata(Proposta a){
+        if(a.getStato() == "chiusa"){
+            return false;
+        }
+
+        Foglia richiestaA = a.getRichiesta();
+        Foglia offertaA = a.getOfferta();
+        int oreRA = a.getOreRichieste();
+        int oreOA = a.getOreOfferte();
+
+        for(Proposta check : riceviProposte(a)){
+            if(check.getOfferta()==richiestaA){
+                a.setStato("chiusa");
+                check.setStato("chiusa");
+            }
+        }
+
+    }
+
+    private String getCompByFruitore(int id) {
+    	
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_F))) {
+           
+            String linea;
+            int countId = 0;
+            if((linea = reader.readLine()) == null) {
+                return 0;
+            }else {
+                do{
+                    String [] credenziale = linea.split(";");    			
+                    countId = Integer.parseInt(credenziale[0]);
+                    if(countId==id){
+                        return credenziale[4];
+                    }
+                } while((linea = reader.readLine()) != null);
+            }
+        }   catch (Exception e) {
+                System.err.println("errore nella lettura da file");
+            }
+   }
+
+    public ArrayList<Proposta> riceviProposte(Proposta a){
+        ArrayList<Proposta> result = new ArrayList<>();
+        String comprensorioA = getCompByFruitore(a.getIdFruitore());
+
+        for(Proposta controllo : listaP){
+            if(controllo.getOfferta()==a.getRichiesta() && controllo.getOreOfferte()==a.getOreRichieste() && controllo.getStato()=="aperta" && comprensorioA==getCompByFruitore(controllo.getIdFruitore()) && a.getIdFruitore()!=controllo.getIdFruitore()){
+                result.add(controllo);
+            }
+        }
+
+        return result;
+    }
+
+
+
 }

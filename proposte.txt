@@ -1,4 +1,0 @@
-ID: 0; Richiesta: 9; OreRichieste: 5; Offerta: 8; OreOfferte: 3; Stato: aperta; idFruitore: 0
-ID: 1; Richiesta: 9; OreRichieste: 56; Offerta: 11; OreOfferte: 56; Stato: aperta; idFruitore: 0
-ID: 2; Richiesta: 10; OreRichieste: 40; Offerta: 12; OreOfferte: 65; Stato: aperta; idFruitore: 0
-ID: 3; Richiesta: 10; OreRichieste: 3; Offerta: 1; OreOfferte: 4; Stato: aperta; idFruitore: 1

@@ -1,4 +1,6 @@
 import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +10,7 @@ public class Proposta {
     private static int idCounter=0;
     private final int id;
     private final int idFruitore;
-    private final String stato;
+    private String stato;
     private Foglia offerta;
     private int oreOfferte;
     private final String FILE_NAME="proposte.txt";
@@ -44,11 +46,39 @@ public class Proposta {
         LocalDateTime currentTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         String timestamp = currentTime.format(formatter);
-        return "ID: " + id + "; Richiesta: " + richiesta.getId() + "; OreRichieste: " + oreRichieste + "; Offerta: " + offerta.getId() + "; OreOfferte: " + oreOfferte + "; Stato: " + stato + "; Ora: " + timestamp;
+        return "ID: " + id + "; Richiesta: " + richiesta.getId() + "; OreRichieste: " + oreRichieste + "; Offerta: " + offerta.getId() + "; OreOfferte: " + oreOfferte + "; Stato: " + stato + "; IdFruitore: " + idFruitore + "; Ora: " + timestamp;
     }
 
     public int getId(){
         return id;
+    }
+
+    public Foglia getRichiesta() {
+        return richiesta;
+    }
+
+    public int getOreRichieste() {
+        return oreRichieste;
+    }
+
+    public int getIdFruitore() {
+        return idFruitore;
+    }
+
+    public String getStato() {
+        return stato;
+    }
+
+    public void setStato(String stato){
+        this.stato=stato;
+    }
+
+    public Foglia getOfferta() {
+        return offerta;
+    }
+
+    public int getOreOfferte() {
+        return oreOfferte;
     }
 
     // Metodo per salvare o aggiornare l'istanza della Foglia nel file
