@@ -549,30 +549,17 @@ public final class Model {
         System.err.println(propostaincorso.getId());
         propostaincorso.save();
         System.err.println(propostaincorso.toString());
+        if(trovaScambi(propostaincorso))
+            System.err.println("proposta già soddisfatta");
+        else
+            System.err.println("non è possibile soddisfare la proposta al momento");
     }
 
     public ArrayList<Integer> getOreConvertite(int id, int ore){
         return listaF.getOreConvertite(id, ore);
     }
 
-    public Boolean controlloCascata(Proposta a){
-        if(a.getStato() == "chiusa"){
-            return false;
-        }
-
-        Foglia richiestaA = a.getRichiesta();
-        Foglia offertaA = a.getOfferta();
-        int oreRA = a.getOreRichieste();
-        int oreOA = a.getOreOfferte();
-
-        for(Proposta check : riceviProposte(a)){
-            if(check.getOfferta()==richiestaA){
-                a.setStato("chiusa");
-                check.setStato("chiusa");
-            }
-        }
-
-    }
+   
 
     private String getCompByFruitore(int id) {
     	
@@ -581,7 +568,7 @@ public final class Model {
             String linea;
             int countId = 0;
             if((linea = reader.readLine()) == null) {
-                return 0;
+                return null;
             }else {
                 do{
                     String [] credenziale = linea.split(";");    			
@@ -589,26 +576,49 @@ public final class Model {
                     if(countId==id){
                         return credenziale[4];
                     }
-                } while((linea = reader.readLine()) != null);
+                }while((linea = reader.readLine()) != null);
             }
-        }   catch (Exception e) {
-                System.err.println("errore nella lettura da file");
-            }
-   }
-
-    public ArrayList<Proposta> riceviProposte(Proposta a){
-        ArrayList<Proposta> result = new ArrayList<>();
-        String comprensorioA = getCompByFruitore(a.getIdFruitore());
-
-        for(Proposta controllo : listaP){
-            if(controllo.getOfferta()==a.getRichiesta() && controllo.getOreOfferte()==a.getOreRichieste() && controllo.getStato()=="aperta" && comprensorioA==getCompByFruitore(controllo.getIdFruitore()) && a.getIdFruitore()!=controllo.getIdFruitore()){
-                result.add(controllo);
-            }
+        }catch (Exception e) {
+            System.err.println("errore nella lettura da file");
         }
-
-        return result;
+        return null;
     }
 
+    public boolean trovaScambi(Proposta a){
+        ArrayList<Proposta> cerchio = new ArrayList<>();
+        ArrayList<Proposta> proposteNelComp = new ArrayList<>();
+        String comp = getCompByFruitore(a.getIdFruitore());
+        for (Proposta elem : listaP) {
+            if(!elem.equals(a) && elem.getStato().equals("aperta") && getCompByFruitore(elem.getIdFruitore()).equals(comp))
+                proposteNelComp.add(elem);
+        }
+        if(proposteNelComp.size() < 1) return false;
+        cerchio.add(a);
+        if(cercaCerchio(proposteNelComp, cerchio)){
+            for (Proposta elem : cerchio) {
+                elem.setStato("chiusa");
+                elem.save();
+            }
+            return true;
+        } 
+        return false;
+    }
+    
+    private boolean cercaCerchio(ArrayList<Proposta> lista, ArrayList<Proposta> cerchio){
+        int dimCerchio = cerchio.size();
+        if(dimCerchio > 1)
+            if(cerchio.get(0).getRichiesta().getNome().equals(cerchio.get(dimCerchio-1).getOfferta().getNome()) && cerchio.get(0).getOreRichieste() == cerchio.get(dimCerchio -1).getOreOfferte())
+                return true;
 
-
+        for(Proposta p : lista){
+            if(cerchio.contains(p)) continue;
+            System.err.println(cerchio.get(dimCerchio - 1).getOfferta().getNome() + " == " + p.getRichiesta().getNome() + " && " + cerchio.get(dimCerchio - 1).getOreOfferte()  + "=="  + p.getOreRichieste());
+            if((cerchio.get(dimCerchio - 1).getOfferta().getNome() == null ? p.getRichiesta().getNome() == null : cerchio.get(dimCerchio - 1).getOfferta().getNome().equals(p.getRichiesta().getNome())) && cerchio.get(dimCerchio - 1).getOreOfferte() == p.getOreRichieste()){
+                cerchio.add(p);
+                if(cercaCerchio(lista, cerchio)) return true;
+                cerchio.remove(dimCerchio - 1);
+            }
+        }
+        return false;
+    }
 }

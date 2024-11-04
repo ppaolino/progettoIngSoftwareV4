@@ -45,7 +45,9 @@ public class Foglia implements Categoria {
      * @pre nome != null && !nome.isEmpty() && id >= 0
      * @post La nuova istanza di Foglia è creata con l'ID specificato.
      */
-    public Foglia(String nome, int id) {
+    public Foglia(String nome, int id, float fattore, int idfattore) {
+        this.fattore = fattore;
+        this.idfattore = idfattore;
         this.id = id;                       // Assegna l'ID specificato
         this.nome = nome;                   // Assegna il nome
         idCounter = id + 1;                 // Imposta il contatore per il prossimo ID

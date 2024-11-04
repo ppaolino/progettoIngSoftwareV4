@@ -1,0 +1,3 @@
+ID: 0; Richiesta: 6; OreRichieste: 20; Offerta: 7; OreOfferte: 20; Stato: aperta; IdFruitore: 0; Ora: 04-11-2024 13:17:28
+ID: 1; Richiesta: 7; OreRichieste: 20; Offerta: 8; OreOfferte: 12; Stato: aperta; IdFruitore: 0; Ora: 04-11-2024 13:17:44
+ID: 2; Richiesta: 8; OreRichieste: 12; Offerta: 6; OreOfferte: 21; Stato: aperta; IdFruitore: 0; Ora: 04-11-2024 13:17:58

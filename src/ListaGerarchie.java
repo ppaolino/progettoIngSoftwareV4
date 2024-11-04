@@ -48,14 +48,18 @@ public final class ListaGerarchie {
             Foglia aggiunto;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(";");
-                if (parts.length < 2) continue;
+                if (parts.length < 4) continue;
 
                 String[] ind = parts[0].trim().split(":");
                 int index = Integer.parseInt(ind[1].trim());
                 if (index == id) {
                     String[] nomi = parts[1].trim().split(":");
                     String nome = nomi[1].trim();
-                    aggiunto = new Foglia(nome, index);
+                    String fattori[] = parts[2].trim().split(":");
+                    float fattore = Float.parseFloat(fattori[1].trim());
+                    String[] idf = parts[3].trim().split(":");
+                    int idfattore = Integer.parseInt(ind[1].trim());
+                    aggiunto = new Foglia(nome, index, fattore, idfattore);
                     return aggiunto;
                 }  
             }

@@ -106,6 +106,8 @@ public class Proposta {
                 // Se la riga corrisponde a questa istanza di Foglia (basata sull'ID), la sostituisce
                 if (line.startsWith("ID: " + id + ";")) {
                     fileContent.add(line); // Sostituisce con i dati aggiornati
+                    line = toString();
+                    fileContent.add(line); // Sostituisce con i dati aggiornati
                     updated = true;
                 } else {
                     fileContent.add(line); // Mantiene le altre righe invariate

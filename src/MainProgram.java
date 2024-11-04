@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 public class MainProgram{
 
 	private JFrame frame;
-	private JPanel pannello;	
+	private final JPanel pannello;	
     private final Model model;
 
 	public static void main(String[] args) {
@@ -18,7 +18,7 @@ public class MainProgram{
                 MainProgram window = new MainProgram();
                 window.frame.setVisible(true);
             } catch (Exception e) {
-                e.printStackTrace();
+                System.err.println("errore nell'avvio dell'applicazione");
             }
             });
     }
