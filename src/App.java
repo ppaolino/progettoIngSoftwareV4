@@ -98,6 +98,7 @@ public class App {
         else {
             comboBox.addItem("Visualizza una Gerarchia");
             comboBox.addItem("Crea proposta");
+            comboBox.addItem("Visualizza proposte");
         }
 
         comboBox.setSelectedIndex(0); // Selezione predefinita
@@ -124,9 +125,15 @@ public class App {
                 }
                 
                 case 2 -> {
-                    model.creaGerarchia();
+                    if(utente){
+                        model.creaGerarchia();
                     // Postcondizione: una nuova gerarchia deve essere stata creata
                     assert !model.getListaGerarchie().isEmpty() : "Nessuna gerarchia creata.";
+                    }
+                    else{
+                        model.visualizzaProposteF();
+                    }
+                    
                 }
                 case 3 -> {
                     model.aggiungiComprensorio();

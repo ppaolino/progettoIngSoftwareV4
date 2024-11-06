@@ -117,9 +117,11 @@ public final class Model {
                 //id fruitore
                 ind = parti[6].trim().split(":");
                 int index4 = Integer.parseInt(ind[1].trim());
+
+                String timestamp = parti[7].split(": ")[1].trim();
                 
 
-                listaP.add(new Proposta(index, richiesta, orer, offerta, oref, stato, index4));
+                listaP.add(new Proposta(index, richiesta, orer, offerta, oref, stato, index4, timestamp));
             }
         } catch (IOException e) {
             System.err.println("Errore nella lettura da file"); // Stampa un errore in caso di problemi di lettura
@@ -143,6 +145,10 @@ public final class Model {
     // Invariante: listaC contiene tutti i comprensori
     public ArrayList<Comprensorio> getComprensori() {
         return listaC;
+    }
+
+    public ArrayList<Proposta> getProposte() {
+        return listaP;
     }
 
     // Restituisce l'oggetto configuratore
@@ -522,6 +528,10 @@ public final class Model {
         new VisComprensorioApp(this); // Crea un'istanza dell'app per visualizzare un comprensorio
     }
 
+    public void visualizzaProposteF(){
+        new VisProposteF(this);
+    }
+
     // Inizializza la classe per la funzione di aggiungere una gerarchia
     // Precondizione: Nessuna
     // Postcondizione: Viene avviata l'app di creazione di una gerarchia
@@ -620,5 +630,14 @@ public final class Model {
             }
         }
         return false;
+    }
+
+    public void aggiornaStato(int id, String stato){
+        for(Proposta p : listaP){
+            if(p.getId()==id){
+                p.setStato("ritirata");
+                p.save();
+            }
+        }
     }
 }

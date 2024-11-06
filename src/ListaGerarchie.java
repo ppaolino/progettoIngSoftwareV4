@@ -58,7 +58,7 @@ public final class ListaGerarchie {
                     String fattori[] = parts[2].trim().split(":");
                     float fattore = Float.parseFloat(fattori[1].trim());
                     String[] idf = parts[3].trim().split(":");
-                    int idfattore = Integer.parseInt(ind[1].trim());
+                    int idfattore = Integer.parseInt(idf[1].trim());
                     aggiunto = new Foglia(nome, index, fattore, idfattore);
                     return aggiunto;
                 }  

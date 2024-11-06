@@ -13,6 +13,7 @@ public class Proposta {
     private String stato;
     private Foglia offerta;
     private int oreOfferte;
+    private String timestamp;
     private final String FILE_NAME="proposte.txt";
 
 
@@ -22,9 +23,12 @@ public class Proposta {
         this.richiesta=richiesta;
         this.oreRichieste=oreRichieste;
         this.stato="aperta";
+        LocalDateTime currentTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        timestamp = currentTime.format(formatter);
     }
 
-    public Proposta(int id, Foglia richiesta, int oreRichieste, Foglia offerta, int oreOfferte, String stato, int idFruitore){
+    public Proposta(int id, Foglia richiesta, int oreRichieste, Foglia offerta, int oreOfferte, String stato, int idFruitore, String timestamp){
         this.id=id;
         this.idFruitore = idFruitore;
         this.richiesta=richiesta;
@@ -32,6 +36,7 @@ public class Proposta {
         this.offerta=offerta;
         this.oreOfferte=oreOfferte;
         this.stato=stato;
+        this.timestamp=timestamp;
         idCounter = id +1;
     }
 
@@ -43,9 +48,6 @@ public class Proposta {
 
     @Override
     public String toString() {
-        LocalDateTime currentTime = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-        String timestamp = currentTime.format(formatter);
         return "ID: " + id + "; Richiesta: " + richiesta.getId() + "; OreRichieste: " + oreRichieste + "; Offerta: " + offerta.getId() + "; OreOfferte: " + oreOfferte + "; Stato: " + stato + "; IdFruitore: " + idFruitore + "; Ora: " + timestamp;
     }
 
@@ -79,6 +81,10 @@ public class Proposta {
 
     public int getOreOfferte() {
         return oreOfferte;
+    }
+
+    public String getTime(){
+        return timestamp;
     }
 
     // Metodo per salvare o aggiornare l'istanza della Foglia nel file
