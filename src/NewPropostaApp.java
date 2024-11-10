@@ -10,9 +10,9 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 
 /**
- * Classe VisGerarchiaApp
+ * Classe NewPropostaApp
  * 
- * Rappresenta una applicazione grafica per la visualizzazione di gerarchie di dati.
+ * Rappresenta una applicazione grafica per la compilazione di proposte.
  * Utilizza un modello (Model) per la gestione dei dati e Swing per l'interfaccia utente.
  */
 public class NewPropostaApp {
@@ -28,9 +28,9 @@ public class NewPropostaApp {
     private int number = 0;
 
     /**
-     * Costruttore per VisGerarchiaApp
+     * Costruttore per NewPropostaApp
      * 
-     * @param model il modello dei dati per la gerarchia da visualizzare
+     * @param model il modello dei dati
      */
     public NewPropostaApp(Model model) {
         this.model = model; // Inizializza il modello
@@ -42,7 +42,10 @@ public class NewPropostaApp {
      * 
      * Precondizione: Il modello deve essere inizializzato correttamente.
      */
+    @SuppressWarnings("unused")
     private void swInitialize() {
+        assert model != null : "modello deve essere inizializzato";
+
         software = new JFrame("Crea proposta"); // Crea la finestra principale
         software.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Chiudi l'app quando la finestra è chiusa
         software.setBounds(100, 100, 800, 600); // Dimensioni della finestra
@@ -52,13 +55,7 @@ public class NewPropostaApp {
         // Crea il pannello principale con BorderLayout
         panel = new JPanel(new BorderLayout());
         panel.setBackground(Color.WHITE); // Imposta il colore di sfondo
-        /*
-        JScrollPane scrollPane = new JScrollPane(panel);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-
-        software.add(scrollPane, BorderLayout.CENTER); // Aggiungi lo JScrollPane alla finestra principale
-        */
+       
         ArrayList<Nonfoglia> listaGer = model.getListaGerarchie(); // Ottieni la lista delle gerarchie
         HashMap<String, Integer> gerarchie = new HashMap<>(); // Mappa per associare nomi a ID
 
@@ -133,6 +130,7 @@ public class NewPropostaApp {
 
     }
 
+    //metodo per aggiornare la grafica
     public void updateTree(){
         if (treePanel != null) {
             panel.revalidate();

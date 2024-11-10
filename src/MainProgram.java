@@ -5,54 +5,92 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class MainProgram{
+public class MainProgram {
 
-	private JFrame frame;
-	private final JPanel pannello;	
+    private JFrame frame;
+    private final JPanel pannello;
     private final Model model;
 
-	public static void main(String[] args) {
-		
-    	EventQueue.invokeLater(() -> {
+    /**
+     * Metodo principale che avvia l'applicazione.
+     * 
+     * Precondizioni:
+     * - Nessuna.
+     * 
+     * Postcondizioni:
+     * - Avvia il programma creando una finestra principale.
+     */
+    public static void main(String[] args) {
+        EventQueue.invokeLater(() -> {
             try {
                 MainProgram window = new MainProgram();
                 window.frame.setVisible(true);
             } catch (Exception e) {
-                System.err.println("errore nell'avvio dell'applicazione");
+                System.err.println("Errore nell'avvio dell'applicazione");
             }
-            });
+        });
     }
 
-	public MainProgram() {
-		model = new Model();
-		frame = new JFrame("Scelta tipologia di utente");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//frame.setBounds(100, 100, 431, 275);
-		frame.setSize(347, 203);
-		frame.setLocationRelativeTo(null); 
-		
-		pannello = new JPanel();
-		pannello.setLayout(new GridLayout(0, 1, 0, 0));
-		frame.setContentPane(pannello);
-		
-		JButton btnFruitore = new JButton("FRUITORE");
-		btnFruitore.setFont(new Font("Tahoma", Font.PLAIN, 25));
-		pannello.add(btnFruitore);
-		
-		JButton btnConfig = new JButton("CONFIGURATORE");
-		btnConfig.setFont(new Font("Tahoma", Font.PLAIN, 25));			
-		pannello.add(btnConfig);
-		
-		btnConfig.addActionListener(e -> {
-			LoginApp window = new LoginApp(model);
+    /**
+     * Costruttore della classe `MainProgram`.
+     * 
+     * Precondizioni:
+     * - Nessuna.
+     * 
+     * Postcondizioni:
+     * - Inizializza il modello e la finestra principale con i relativi componenti.
+     * - Crea due pulsanti "FRUITORE" e "CONFIGURATORE" con le relative funzionalità.
+     */
+    @SuppressWarnings("unused")
+    public MainProgram() {
+        model = new Model();
+
+        frame = new JFrame("Scelta tipologia di utente");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(347, 203);
+        frame.setLocationRelativeTo(null);
+
+        pannello = new JPanel();
+        pannello.setLayout(new GridLayout(0, 1, 0, 0));
+        frame.setContentPane(pannello);
+
+        JButton btnFruitore = new JButton("FRUITORE");
+        btnFruitore.setFont(new Font("Tahoma", Font.PLAIN, 25));
+        pannello.add(btnFruitore);
+
+        JButton btnConfig = new JButton("CONFIGURATORE");
+        btnConfig.setFont(new Font("Tahoma", Font.PLAIN, 25));
+        pannello.add(btnConfig);
+
+        /**
+         * Listener per il pulsante "CONFIGURATORE".
+         * 
+         * Precondizioni:
+         * - `model` non deve essere null.
+         * 
+         * Postcondizioni:
+         * - Avvia la finestra di configurazione (`LoginApp`) e nasconde la finestra principale.
+         */
+        btnConfig.addActionListener(e -> {
+            assert model != null : "Il model non può essere null";
+            LoginApp window = new LoginApp(model);
             window.setVisible();
-			frame.setVisible(false);
-		});
-		
-		
-		btnFruitore.addActionListener(e -> {
-			new LoginFruitore(model);
-			frame.setVisible(false);
-		});
-	}
+            frame.setVisible(false);
+        });
+
+        /**
+         * Listener per il pulsante "FRUITORE".
+         * 
+         * Precondizioni:
+         * - `model` non deve essere null.
+         * 
+         * Postcondizioni:
+         * - Avvia la finestra di login per il fruitore (`LoginFruitore`) e nasconde la finestra principale.
+         */
+        btnFruitore.addActionListener(e -> {
+            assert model != null : "Il model non può essere null";
+            new LoginFruitore(model);
+            frame.setVisible(false);
+        });
+    }
 }

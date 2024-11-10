@@ -15,8 +15,8 @@ public class Foglia implements Categoria {
     private static final String FILE_NAME = "foglie.txt"; // Nome del file per salvare i dati delle foglie
 
     private final Fattorediconversione f = Fattorediconversione.getInstance();
-    private float fattore;                    // Valore del fattore di conversione associato
-    private int idfattore;                    // ID del fattore di conversione
+    private final float fattore;                    // Valore del fattore di conversione associato
+    private final int idfattore;                    // ID del fattore di conversione
 
     /**
      * Costruttore principale per Foglia.

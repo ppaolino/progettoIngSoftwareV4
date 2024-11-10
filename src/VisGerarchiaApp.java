@@ -68,7 +68,7 @@ public class VisGerarchiaApp {
         JComboBox<String> comboBox = new JComboBox<>(gerarchie.keySet().toArray(new String[0]));
 
         // Aggiungi un ActionListener al JComboBox
-        comboBox.addActionListener((ActionEvent e) -> {
+        comboBox.addActionListener((@SuppressWarnings("unused") ActionEvent e) -> {
             int id = gerarchie.get((String) comboBox.getSelectedItem());
             try {
                 Nonfoglia radice = model.getGerarchia(id);
@@ -151,10 +151,15 @@ public class VisGerarchiaApp {
         LineBorder border = (node instanceof Nonfoglia) ? new LineBorder(Color.ORANGE, 3) : new LineBorder(Color.GREEN, 3);
         label.setBorder(border);
 
-        // Configura finestra di hover per informazioni aggiuntive
+        // Configura finestre di hover per informazioni aggiuntive
         JFrame hoverWindow = new JFrame();
         hoverWindow.setSize(250, 150);
         hoverWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        JFrame hoverWindow2 = new JFrame();
+        hoverWindow2.setBounds(120, 120, 1000, 300); // Dimensioni della finestra
+        hoverWindow2.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
 
         // Aggiungi un MouseListener per l'evento hover
         label.addMouseListener(new MouseAdapter() {
@@ -210,6 +215,23 @@ public class VisGerarchiaApp {
                 }
             }
         }
+        else if(model.getFruitore() == null){ //se il nodo è una foglia e l'utente è un cconfiguratore mostra tutte le proposte che coinvolgono la foglia
+            label.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Imposta il cursore come una mano
+
+            label.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    // Azione da eseguire quando si clicca la label
+                    
+                    JTextArea hoverText2 = new JTextArea(info2(node.getId()));
+                    hoverText2.setEditable(false);
+                    JScrollPane scroll = new JScrollPane(hoverText2);
+                    hoverWindow2.add(scroll, BorderLayout.CENTER);
+                    hoverWindow2.setVisible(true);
+                }
+            });
+        }
+
         return yOffset;
     }
 
@@ -220,6 +242,8 @@ public class VisGerarchiaApp {
      * @return la profondità massima
      */
     public static int calcolaProfondita(Nonfoglia nodo) {
+        assert nodo != null : "il nodo passato non deve essere null";
+
         if ("foglie".equals(nodo.getTipoFigli())) {
             return 2;
         }
@@ -238,6 +262,8 @@ public class VisGerarchiaApp {
      * @return la stringa HTML con le informazioni sul nodo
      */
     private String info(Categoria c) {
+        assert c != null : "la categoria non deve essere null";
+
         Fattorediconversione fattore = Fattorediconversione.getInstance();
         StringBuilder s = new StringBuilder();
 
@@ -249,19 +275,52 @@ public class VisGerarchiaApp {
             }
         } else {
             Foglia f = (Foglia) c;
-            if(f!= null){
-                ArrayList<Float> fattori = fattore.getFattoriCategoria(f.getId());
-                s.append("<html><body>");
-                for (int i = 0; i < fattori.size(); i++) {
-                    if (i != f.getId()) {
-                        Foglia ff = model.getFoglia(i);
-                        s.append(ff.getNome()).append("<br>").append(String.format("%.2f", fattori.get(i))).append("<br>");
-                    }
+            ArrayList<Float> fattori = fattore.getFattoriCategoria(f.getId());
+            s.append("<html><body>");
+            for (int i = 0; i < fattori.size(); i++) {
+                if (i != f.getId()) {
+                    Foglia ff = model.getFoglia(i);
+                    s.append(ff.getNome()).append("<br>").append(String.format("%.2f", fattori.get(i))).append("<br>");
                 }
-            }
-            
+            }   
         }
         s.append("</body></html>");
+        return s.toString();
+    }
+
+    /**
+     * Genera una lista di tutte le proposte che coinvolgono una foglia.
+     *
+     * @param id l'id della foglia di cui genera le informazioni
+     * @return la stringa  co le informazioni sulla foglia
+     */
+    private String info2 (int id){
+        ArrayList<String> info = model.caricaProposteById(id);
+        StringBuilder s = new StringBuilder();
+        if(info.isEmpty()) s.append("nessuna proposta contiene questa attività!");
+        for (String elem : info) {
+            String[]elems = elem.split(";");
+
+            s.append("La proposta ")
+                .append(elems[0].split(":")[1].trim())
+                .append(" dell'utente ")
+                .append(model.getFruitoreName(Integer.parseInt(elems[6].split(":")[1].trim())))
+                .append(": ")
+                .append(elems[2].split(":")[1].trim())
+                .append(" ore di ")
+                .append(model.getFoglia(Integer.parseInt(elems[1].split(":")[1].trim())).getNome())
+                .append(" in cambio di ")
+                .append(elems[4].split(":")[1].trim())
+                .append(" ore di ")
+                .append(model.getFoglia(Integer.parseInt(elems[3].split(":")[1].trim())).getNome())
+                .append(", è stata ")
+                .append(elems[5].split(":")[1].trim())
+                .append(" in ")
+                .append(elems[7])
+                .append("\n\n");
+            
+        }
+
         return s.toString();
     }
 }

@@ -35,6 +35,7 @@ public class VisComprensorioApp {
      * Precondizione: il modello deve contenere una lista di comprensori valida.
      * Postcondizione: la finestra è configurata e visibile con i comprensori caricati nella comboBox.
      */
+    @SuppressWarnings("unused")
     private void initialize() {
         // Configura la finestra principale
         window = new JFrame("Visualizza tutti i comprensori geografici");

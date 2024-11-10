@@ -22,7 +22,7 @@ public class Nonfoglia implements Categoria {
      * Postcondizioni: viene creata un'istanza Nonfoglia con ID unico e figli inizializzati come null.
      */
     public Nonfoglia(String nome, String campo, String[] dominio, String[] descrizione, boolean isRadice) {
-        
+        assert dominio.length == descrizione.length : "domini e descrizioni devono corrispondere";
 
         this.id = idCounter++;  // Assegna un ID univoco e lo incrementa
         this.nome = nome;
@@ -45,6 +45,8 @@ public class Nonfoglia implements Categoria {
      * Postcondizioni: viene creata una Nonfoglia con ID specifico e tipoFigli impostato.
      */
     public Nonfoglia(int id, String nome, String campo, String[] dominio, String[] descrizione, boolean isRadice, String tipoFigli) {
+        assert dominio.length == descrizione.length : "domini e descrizioni devono corrispondere";
+        
         this.id = id;
         idCounter = id + 1; // Imposta il contatore per il prossimo ID
         this.nome = nome;
@@ -155,10 +157,12 @@ public class Nonfoglia implements Categoria {
         return nome;
     }
 
+    // Metodo per ottenere il tipo dei figli della Nonfoglia
     public String getTipoFigli() {
         return tipoFigli;
     }
 
+    // Metodo per impostare il tipo dei figli della Nonfoglia
     public void setTipoFigli(String s) {
         if(s.equals("foglie")) tipoFigli = s;
         else if(s.equals("non foglie")) tipoFigli = s;
@@ -199,6 +203,7 @@ public class Nonfoglia implements Categoria {
         return descrizione;
     }
 
+    //Metodo per ottenere i dominio disponibili (senza una sotto-categoria associata) nella Nonfoglia
     public ArrayList<String> getDominiDisp(){
         ArrayList<String> lista = new ArrayList<>();
         for (int i = 0; i < figli.length; i++) {

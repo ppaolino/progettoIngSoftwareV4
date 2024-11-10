@@ -1,8 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-import java.util.List;
-
 import javax.swing.*;
 
 public class VisProposteF {
@@ -16,33 +14,71 @@ public class VisProposteF {
     private final Fruitore f;
     private ArrayList<Proposta> listaP;
     private Map<String, ArrayList<Proposta>> propostaMap;
-     ArrayList<String> originalString= new ArrayList<>();
+    ArrayList<String> originalString = new ArrayList<>();
 
+    /**
+     * Precondizioni:
+     * - `model` non deve essere null.
+     * - Il `model` deve avere un `Fruitore` associato.
+     * 
+     * Postcondizioni:
+     * - L'istanza `VisProposteF` è inizializzata correttamente.
+     * - Viene invocato il metodo `initialize()`.
+     */
     public VisProposteF(Model model) {
-        this.f = model.getFruitore();
+        assert model != null : "il model deve essere valido";
+
         this.model = model;
+        this.f = model.getFruitore();
         initialize();
     }
 
+    /**
+     * Precondizioni:
+     * - `p` non deve essere null.
+     * 
+     * Postcondizioni:
+     * - Viene restituita una stringa contenente le informazioni sulla `Proposta`.
+     */
     private String getInfo(Proposta p) {
+        assert p != null : "la proposta deve essere valida";
+
         return "Richiesta: " + p.getRichiesta().getNome() +
                " - Ore richieste: " + p.getOreRichieste() +
                "  -->  Offerta: " + p.getOfferta().getNome() +
                " - Ore offerte: " + p.getOreOfferte() +
                " - Stato: " + p.getStato() +
-               " - Data: " + p.getTime();
+               " - Data: " + p.getTime() + "\n";
     }
 
+    /**
+     * Precondizioni:
+     * - `listaP` non deve essere null.
+     * 
+     * Postcondizioni:
+     * - Viene popolata la mappa `propostaMap` con tutte le proposte relative al `Fruitore` corrente.
+     */
+    @SuppressWarnings("unused")
     private void initializeDataMap() {
         propostaMap = new HashMap<>();
         for (Proposta proposta : listaP) {
             if (proposta.getIdFruitore() == f.getId()) {
-                String key =""+proposta.getId();
+                String key = "" + proposta.getId();
                 propostaMap.computeIfAbsent(key, k -> new ArrayList<>()).add(proposta);
             }
         }
     }
 
+    /**
+     * Precondizioni:
+     * - Il `model` deve contenere una lista di `Proposta`.
+     * 
+     * Postcondizioni:
+     * - Viene creata e visualizzata una finestra `JFrame`.
+     * - La `comboBox` viene popolata con le proposte disponibili.
+     * - Viene aggiunto un listener per gestire la selezione delle proposte.
+     */
+    @SuppressWarnings("unused")
     private void initialize() {
         this.listaP = model.getProposte();
         initializeDataMap();
@@ -61,20 +97,21 @@ public class VisProposteF {
 
         if (!propostaMap.keySet().isEmpty()) {
             ArrayList<Proposta> visualizza = new ArrayList<>();
-        
+
             // Flatten all lists into a single ArrayList
             for (String propostaList : propostaMap.keySet()) {
                 visualizza.add(propostaMap.get(propostaList).get(0));
             }
-            // Loop through each Proposta in the visualizza ArrayList
-            for (int i=0; i<visualizza.size(); i++) {
-                originalString.add(""+visualizza.get(i).getId());
+
+            // Loop through each `Proposta` in the visualizza ArrayList
+            for (int i = 0; i < visualizza.size(); i++) {
+                originalString.add("" + visualizza.get(i).getId());
                 comboBox.addItem(visualizza.get(i).getRichiesta().getNome() + " --> " + visualizza.get(i).getOfferta().getNome());
             }
         } else {
             comboBox.addItem("Nessuna proposta creata");
+            comboBox.setEnabled(false);
         }
-        
 
         proposalPanel = new JPanel();
         proposalPanel.setLayout(new BoxLayout(proposalPanel, BoxLayout.PAGE_AXIS)); // Stack each proposal row
@@ -94,11 +131,28 @@ public class VisProposteF {
         window.setVisible(true);
     }
 
-    
-
+    /**
+     * Precondizioni:
+     * - `id` deve essere un indice valido all'interno della lista `originalString`.
+     * 
+     * Postcondizioni:
+     * - Viene aggiornato il pannello con le informazioni sulla `Proposta` selezionata.
+     */
+    @SuppressWarnings("unused")
     private void updateSelectedProposalInfo(int id) {
+        assert id >= 0 : "id deve essere un numero positivo";
+
         String selectedKey = originalString.get(id);
-        proposalPanel.removeAll(); // Clear previous proposals
+        proposalPanel.removeAll();
+
+        JPanel proposalRow = new JPanel();
+        JTextArea proposalText = new JTextArea();
+        proposalText.setColumns(40);
+        proposalText.setRows(1);
+        proposalText.setLineWrap(false);
+        proposalText.setWrapStyleWord(false);
+        proposalText.setEditable(false);
+        proposalText.setFont(new Font("Serif", Font.PLAIN, 14));
 
         if (selectedKey != null && propostaMap.containsKey(selectedKey)) {
             ArrayList<Proposta> selectedProposte = propostaMap.get(selectedKey);
@@ -109,41 +163,44 @@ public class VisProposteF {
                 }
             }
 
+            proposalRow.add(proposalText);
+
             for (Proposta proposta : selectedProposte) {
                 if (proposta.getIdFruitore() == f.getId()) {
-                    JPanel proposalRow = new JPanel(); // Align components closely to each other
+                    proposalText.append(getInfo(proposta));
 
-                    JTextArea proposalText = new JTextArea(getInfo(proposta));
-                    proposalText.setColumns(40); // Fixed width for text display
-                    proposalText.setRows(1); // Set only one row to keep it as a single line
-                    proposalText.setLineWrap(false); // Disable line wrapping to keep one line per proposal
-                    proposalText.setWrapStyleWord(false);
-                    proposalText.setEditable(false);
-                    proposalText.setFont(new Font("Serif", Font.PLAIN, 14));
-                    proposalRow.add(proposalText);
-
-                    // Show button only if text fits in one line
-                    if ("aperta".equalsIgnoreCase(proposta.getStato()) && counter==1) {
+                    if ("aperta".equalsIgnoreCase(proposta.getStato()) && counter == 1) {
                         JButton actionButton = new JButton("Ritira la proposta");
-                        actionButton.setPreferredSize(new Dimension(150, proposalText.getPreferredSize().height)); // Small button height
+                        actionButton.setPreferredSize(new Dimension(150, proposalText.getPreferredSize().height));
                         actionButton.addActionListener(e -> performActionOnProposal(proposta));
                         proposalRow.add(actionButton);
                     }
-
-                    proposalPanel.add(proposalRow);
                 }
             }
-            counter=0;
+            counter = 0;
         }
 
+        proposalPanel.add(proposalRow);
         proposalPanel.revalidate();
         proposalPanel.repaint();
     }
 
+    /**
+     * Precondizioni:
+     * - `proposta` non deve essere null.
+     * - Il `model` deve supportare il metodo `aggiornaStato`.
+     * 
+     * Postcondizioni:
+     * - Lo stato della proposta viene aggiornato a "ritirata".
+     * - Viene mostrato un messaggio di conferma.
+     * - La finestra viene chiusa e riaperta con i dati aggiornati.
+     */
     private void performActionOnProposal(Proposta proposta) {
-
+        assert proposta != null : "proposta deve esistere";
+        
         model.aggiornaStato(proposta.getId(), "ritirata");
-        JOptionPane.showMessageDialog(window, "La proposta " + proposta.getRichiesta().getNome() + " --> " + proposta.getOfferta().getNome() + " è stata ritirata");
+        JOptionPane.showMessageDialog(window, "La proposta " + proposta.getRichiesta().getNome() +
+                " --> " + proposta.getOfferta().getNome() + " è stata ritirata");
         window.removeAll();
         window.dispose();
         initialize();

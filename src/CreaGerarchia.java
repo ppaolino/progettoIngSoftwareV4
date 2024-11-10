@@ -331,6 +331,9 @@ public class CreaGerarchia implements ActionListener {
      * - I valori di dominio devono essere unici.
      */
     private Nonfoglia creaNonfoglia(String name, boolean isRadice, String dom, int IdPadre) {
+        assert name != null : "name deve essere un valore valido";
+        assert dom != null : "dom deve essere un valore valido";
+        assert IdPadre >= 0 : "id deve essere un valore valido";
 
         // Precondizione: verifico che il nome non sia vuoto
         while (name.equals("")) {
@@ -476,6 +479,7 @@ public class CreaGerarchia implements ActionListener {
      * @return La profondità massima dell'albero.
      */
     public static int calcolaProfondita(Nonfoglia nodo) {
+        assert nodo != null : "nodo deve esistere";
 
         // Precondizione: verifica che il nodo non sia nullo
         if (nodo == null) {

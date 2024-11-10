@@ -68,7 +68,7 @@ public class LoginApp {
         pnlPredefinito.add(messageLabel);
 
         // Listener per il bottone di registrazione
-        btnRegister.addActionListener((ActionEvent e) -> {
+        btnRegister.addActionListener((@SuppressWarnings("unused") ActionEvent e) -> {
             String username = userText.getText().trim();
             String password = new String(passwordText.getPassword()).trim();
 
@@ -139,11 +139,15 @@ public class LoginApp {
         pnlLogin.add(lblExit);
 
         // Listener per il bottone di login
-        btnLogin.addActionListener((ActionEvent e) -> {
+        btnLogin.addActionListener((@SuppressWarnings("unused") ActionEvent e) -> {
             String username = txtUser.getText().trim();
             String password = new String(txtPass.getPassword()).trim();
-
-            if (!primoAccesso) {
+            if(username.equals("") || password.equals("")){
+                lblExit.setText("Compilare tutti i campi");
+                txtPass.setText(null);
+                txtUser.setText(null);
+            }
+            else if (!primoAccesso) {
                 if (model.listaContains(username, password)) {
                     frameLogin.setVisible(false);
                     System.out.println("Credenziali corrette! Benvenuto...");
@@ -176,6 +180,7 @@ public class LoginApp {
      * @pre Il frame principale e il modello devono essere inizializzati.
      * @post Il menu di accesso è creato e visibile.
      */
+    @SuppressWarnings("unused")
     private void creaLogin() {
         frameLogin = new JFrame("Registrazione Configuratore");
         frameLogin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

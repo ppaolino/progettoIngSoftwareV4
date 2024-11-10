@@ -275,6 +275,8 @@ public final class ListaGerarchie {
      * @return true se il nome non è presente in `radici`, false altrimenti.
      */
     public boolean isNameClear(String name) {
+        assert name != null : "name deve esistere";
+        
         for (Nonfoglia elem : radici) {
             if (elem.getNome().equals(name)) return false;
         }

@@ -93,7 +93,8 @@ public class App {
             comboBox.addItem("Visualizza un Comprensorio geografico");
             comboBox.addItem("Crea una nuova Gerarchia");
             comboBox.addItem("Crea un nuovo Comprensorio geografico");
-            
+            comboBox.addItem("Visualizza gli insiemi chiusi");
+
         }
         else {
             comboBox.addItem("Visualizza una Gerarchia");
@@ -110,7 +111,7 @@ public class App {
         panel2.add(btnScelta);
 
         // Listener per il pulsante che esegue l'azione selezionata
-        btnScelta.addActionListener((ActionEvent e) -> {
+        btnScelta.addActionListener((@SuppressWarnings("unused") ActionEvent e) -> {
             int scelta = comboBox.getSelectedIndex();
             
             // Switch per determinare l'azione in base all'opzione selezionata
@@ -139,6 +140,9 @@ public class App {
                     model.aggiungiComprensorio();
                     // Postcondizione: un nuovo comprensorio deve essere stato aggiunto
                     assert !model.getComprensori().isEmpty() : "Nessun comprensorio aggiunto.";
+                }
+                case 4 -> {
+                    model.visualizzaInsieme();
                 }
                 default -> System.out.println("Nessuna azione disponibile.");
             }

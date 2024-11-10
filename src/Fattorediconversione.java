@@ -104,6 +104,8 @@ public final class Fattorediconversione {
      * @return Lista di fattori per la categoria indicata.
      */
     public ArrayList<Float> getFattoriCategoria(int index) {
+        assert index >= 0 : "index deve essere un numero positivo";
+
         System.err.println(fattori.size());
         return fattori.get(index);
     }
@@ -117,6 +119,8 @@ public final class Fattorediconversione {
      * @param fattoridainserire Lista di fattori da inserire nella categoria.
      */
     public void updateFattori(int index, ArrayList<Float> fattoridainserire) {
+        assert index >= 0 : "index deve essere un numero positivo";
+
         fattori.set(index, fattoridainserire);
     }
 
@@ -158,6 +162,7 @@ public final class Fattorediconversione {
      * @param newFattori Lista di nuovi fattori da aggiungere.
      */
     public void addFattori(ArrayList<Float> newFattori) {
+        assert newFattori != null : "newFattori deve esistere";
         fattori.add(newFattori);
     }
 
@@ -211,18 +216,53 @@ public final class Fattorediconversione {
             }
         }
     }
+   /**
+     * Arrotonda un numero float all'intero più vicino.
+     *
+     * Precondizioni:
+     * - `numero` deve essere un valore di tipo float.
+     *
+     * Postcondizioni:
+     * - Restituisce un valore intero ottenuto arrotondando il numero al più vicino intero.
+     * - Il risultato sarà:
+     *   - `Math.floor(numero + 0.5)` se `numero` è positivo.
+     *   - `Math.ceil(numero - 0.5)` se `numero` è negativo.
+     */
     private int round(float numero) {
         return Math.round(numero);
     }
 
-    public ArrayList<Integer> getOreConvertite(int id, int ore){
+    /**
+     * Converte un numero di ore in base ai fattori associati all'id specificato.
+     *
+     * Precondizioni:
+     * - `id` deve essere un indice valido all'interno della lista `fattori` (i.e., `id >= 0 && id < fattori.size()`).
+     * - `fattori.get(id)` deve restituire una lista di numeri decimali (`float` o `double`).
+     * - `ore` deve essere un numero intero positivo o zero.
+     * - La lista restituita da `fattori.get(id)` non deve essere vuota.
+     *
+     * Postcondizioni:
+     * - Restituisce una `ArrayList<Integer>` contenente i valori ottenuti moltiplicando ogni elemento della lista dei fattori associati a `id` per `ore` e arrotondandolo all'intero più vicino.
+     * - L'elemento alla posizione `id` della lista restituita verrà impostato a `null`.
+     * - Stampa sullo standard error (`System.err`) il contenuto della lista risultante.
+     */
+    public ArrayList<Integer> getOreConvertite(int id, int ore) {
+        assert id >= 0 && id < fattori.size() : "id deve essere un valore valido";
+        assert ore >= 0 : "ore deve essere un valore valido";
+        
         ArrayList<Integer> result = new ArrayList<>();
 
-        for(int i=0; i<fattori.get(id).size(); i++){
-            result.add(round(fattori.get(id).get(i)*ore));  
+        for (int i = 0; i < fattori.get(id).size(); i++) {
+            result.add(round(fattori.get(id).get(i) * ore));
         }
+        
+        // Imposta il valore a null nella posizione 'id'
         result.set(id, null);
+        
+        // Stampa il risultato sullo standard error
         System.err.println(result.toString());
+
         return result;
     }
+
 }

@@ -48,6 +48,7 @@ public class ComprensorioApp {
      * Precondizione: model deve essere un'istanza valida di Model.
      * Postcondizione: L'interfaccia utente è visibile e pronta per l'interazione.
      */
+    @SuppressWarnings("unused")
     private void initialize() {
         // Inizializza il frame principale
         software = new JFrame("Gestione Comprensorio");
@@ -178,6 +179,7 @@ public class ComprensorioApp {
      * Precondizione: filteredOptions deve essere una lista valida e non nulla.
      * Postcondizione: Le checkbox nel pannello delle opzioni sono aggiornate in base alle nuove opzioni filtrate.
      */
+    @SuppressWarnings("unused")
     private void updateCheckboxes(List<String> filteredOptions) {
         optionsPanel.removeAll();
         checkBoxes.clear();

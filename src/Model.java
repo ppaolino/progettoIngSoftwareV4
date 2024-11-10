@@ -8,11 +8,13 @@ public final class Model {
     private Configuratore conf;
     private Fruitore fruit;
     
-    // Nomi dei file di configurazione e dei comprensori
+    // Nomi dei file di configurazione
     private static final String FILE_NAME_CONF = "Configuratori.txt";
     private static final String FILE_NAME = "comprensorio.txt";
     private static final String FILE_F = "Fruitori.txt";	//---------------------------------
     private static final String FILE_P = "proposte.txt";
+    private static final String FILE_NAME_I = "insiemiChiusi.txt";
+
     
     // Singleton delle liste
     private ListaGerarchie listaG = ListaGerarchie.getInstance();
@@ -81,13 +83,26 @@ public final class Model {
         // caricamento da file delle richieste
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_P))) {
             String line;
+            boolean crea;
+            int i;
             while ((line = reader.readLine()) != null) {
                 // Suddivide la linea in parti
                 String[] parti = line.split("; ");
-
+                crea = true;
+                i = -1;
                 //id proposta
                 String[] ind = parti[0].trim().split(":");
                 int index = Integer.parseInt(ind[1].trim());
+                
+                
+
+                for (Proposta elem : listaP) {
+                    if(elem.getId() == index){
+                        crea = false;
+                        i = listaP.lastIndexOf(elem);
+                    }
+                }
+
 
                 //id richiesta
                 ind = parti[1].trim().split(":");
@@ -119,20 +134,25 @@ public final class Model {
                 int index4 = Integer.parseInt(ind[1].trim());
 
                 String timestamp = parti[7].split(": ")[1].trim();
+                Proposta p = new Proposta(index, richiesta, orer, offerta, oref, stato, index4, timestamp);
+                if(crea)
+                    listaP.add(p);
+                else
+                    listaP.set(i, p);
                 
-
-                listaP.add(new Proposta(index, richiesta, orer, offerta, oref, stato, index4, timestamp));
             }
         } catch (IOException e) {
             System.err.println("Errore nella lettura da file"); // Stampa un errore in caso di problemi di lettura
         }
-
+        System.err.println(listaP.size());
 
     }
 
     // Precondizione: 'nome' non deve già esistere nei comprensori
     // Postcondizione: Viene creato un nuovo comprensorio se il nome non è già usato
     public Comprensorio creaComprensorio(String nome) {
+        assert nome != null : "nome non deve essere null";
+
         if (verificaDisp(nome)) {
             Comprensorio c = new Comprensorio(nome);
             listaC.add(c);
@@ -196,8 +216,11 @@ public final class Model {
     }
 
     // Precondizione: 'username' e 'password' non devono essere null
-    // Postcondizione: Restituisce true se l'utente esiste, false altrimenti
+    // Postcondizione: Restituisce true se il configuratore esiste, false altrimenti
     public boolean listaContains(String username, String password) {
+        assert username != null : "username non deve essere null";
+        assert password != null : "password non deve essere null";
+
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME_CONF))) {
             String linea;
             while ((linea = reader.readLine()) != null) {
@@ -214,7 +237,11 @@ public final class Model {
         return false;
     }
 
+    // Precondizione: 'username' e 'password' non devono essere null
+    // Postcondizione: Restituisce true se il fruitore esiste, false altrimenti
     public boolean listaContainsF(String username, String password) {  
+        assert username != null : "username non deve essere null";
+        assert password != null : "password non deve essere null";
     	
     	try (BufferedReader reader = new BufferedReader(new FileReader(FILE_F))) {
     		String linea;
@@ -236,13 +263,23 @@ public final class Model {
 
 
     // Verifica se username e password corrispondono
+    // Precondizione: username, password c1 e c2 non devono essere null
+    // Postcondizione: Restituisce true se il nome è già in uso (sia tra i fruitori che i configuratori)
     public boolean check(String c1, String c2, String username, String password) {
+        assert username != null : "username non deve essere null";
+        assert password != null : "password non deve essere null";
+        assert c1 != null : "c1 non deve essere null";
+        assert c2 != null : "c2 non deve essere null";
+
         return c1.equals(username) && c2.equals(password);
     }
 
     // Precondizione: 'username' e 'password' devono essere validi
     // Postcondizione: Salva le credenziali nel file di configurazione
     public void salvaConfig(String username, String password) {
+        assert username != null : "username non deve essere null";
+        assert password != null : "password non deve essere null";
+
         String[] stringheDaSalvare = {username, password};
         try (FileWriter writer = new FileWriter(FILE_NAME_CONF, true)) {
             writer.write("\n");
@@ -254,10 +291,12 @@ public final class Model {
         }
     }
 
-    // Precondizione: 'username' non deve essere già in uso
-    // Postcondizione: Restituisce true se il nome utente è già in uso
-    public boolean inUso(String username) {  	//MDIFICATO IL METODO(stesso di LoginFruitore) ----------------------------
-    	
+    // Precondizione: 'username' non deve essere null
+    // Postcondizione: Restituisce true se il nome è già in uso (sia tra i fruitori che i configuratori)
+    public boolean inUso(String username) {  	
+        assert username != null : "username non deve essere null";
+
+
 		try (BufferedReader readerF = new BufferedReader(new FileReader(FILE_F));
 			 BufferedReader readerC = new BufferedReader(new FileReader(FILE_NAME_CONF))) {
 			
@@ -281,34 +320,12 @@ public final class Model {
 	    return false;
     }
 
-    public boolean inUsoFruitore(String username) {  	
-    	
-        try (BufferedReader readerF = new BufferedReader(new FileReader(FILE_F));
-             BufferedReader readerC = new BufferedReader(new FileReader(FILE_NAME_CONF))) {
-            
-            String linea;
-            
-            while ((linea = readerF.readLine()) != null) {
-                String [] credenziale = linea.split(";");
-                String name = credenziale[1];   				
-                if (name.equals(username))
-                    return true;    				
-            }
-            while ((linea = readerC.readLine()) != null) {
-                String [] credenziale = linea.split(";");
-                String name = credenziale[0];
-                if (name.equals(username))
-                    return true;    				
-            }			   			    			    				   			
-        } catch (Exception e) {
-            System.err.println("errore nella lettura da file");
-        }
-        return false;
-    }
-
     // Precondizione: 'username' e 'password' non devono essere null
     // Postcondizione: Verifica se le credenziali sono corrette
     public boolean validateLogin(String username, String password) {
+        assert username != null : "username non deve essere null";
+        assert password != null : "password non deve essere null";
+
         return "a".equals(username) && "p".equals(password);
     }
 
@@ -321,6 +338,8 @@ public final class Model {
     // Precondizione: 'radici' non deve essere vuoto
     // Postcondizione: Restituisce il nodo con l'ID specificato o null se non trovato
     public Nonfoglia trovaNodo(ArrayList<Nonfoglia> radici, int id) {
+        assert !radici.isEmpty() : "la lista delle radici non deve essere nulla";
+
         for (Nonfoglia radice : radici) {
             Nonfoglia risultato = cercaNodo(radice, id);
             if (risultato != null) {
@@ -334,6 +353,8 @@ public final class Model {
     // Precondizione: 'nodo' non deve essere null
     // Postcondizione: Restituisce il nodo con l'ID o null se non trovato
     public Nonfoglia cercaNodo(Nonfoglia nodo, int id) {
+        assert nodo != null : "il nodo non deve essere nullo";
+
         // Se il nodo ha l'ID cercato, ritorniamo il nodo
         if (nodo.getId() == id) {
             return nodo;
@@ -358,6 +379,8 @@ public final class Model {
     // Precondizione: 'id' deve essere un ID valido esistente nelle gerarchie
     // Postcondizione: Restituisce un oggetto Nonfoglia che rappresenta la gerarchia
     public Nonfoglia getGerarchia(int id) {
+        assert id >= 0 : "l'id deve essere valido";
+
         return listaG.getGerarchiaID(id);
     }
 
@@ -392,6 +415,8 @@ public final class Model {
     // Precondizione: 'node' non deve essere null
     // Postcondizione: Aggiorna la lista result con le foglie trovate
     private void getLeavesFromNode(Nonfoglia node, List<String> result, String rootName) {
+        assert node != null : "il nodo non deve essere null";
+
         for (Categoria child : node.getFigli()) {
             switch (child) {
                 case null -> {} // Ignora i figli null
@@ -406,6 +431,9 @@ public final class Model {
     // Precondizione: 'nome' e 'dom' devono essere validi
     // Postcondizione: Restituisce un oggetto Foglia creato e aggiunto
     public Foglia creaFoglia(String nome, float fattore, int idfattore, int idPadre, String dom) {
+        assert nome != null : "nome non deve essere null";
+        assert dom != null : "dominio non deve essere null";
+
         if (getAllLeaves().isEmpty())
             idfattore = -1; // Imposta idfattore se non ci sono foglie
 
@@ -419,6 +447,11 @@ public final class Model {
     // Precondizione: 'nome', 'campo', 'dominio', 'desc' devono essere validi
     // Postcondizione: Restituisce un oggetto Nonfoglia creato e aggiunto
     public Nonfoglia creaNonFoglia(String nome, String campo, String[] dominio, String[] desc, boolean isRadice, int idPadre, String dom, String tipoFigli) {
+        assert nome != null : "nome non deve essere null";
+        assert campo != null : "campo non deve essere null";
+        assert dominio != null : "dominio non deve essere null";
+        assert desc != null : "desc non deve essere null";
+
         Nonfoglia nfoglia = new Nonfoglia(nome, campo, dominio, desc, isRadice); // Crea la non foglia
         nfoglia.setTipoFigli(tipoFigli); // Imposta il tipo di figli
 
@@ -434,6 +467,9 @@ public final class Model {
     // Precondizione: 'nf' non deve essere null, 'id' deve essere valido
     // Postcondizione: Aggiunge 'nf' come figlio del nodo padre
     public void aggiungiFiglio(Nonfoglia nf, int id, String dom) {
+        assert nf != null : "la foglia non deve essere null";
+        assert id >= 0 : "l'id deve essere positivo";
+
         Nonfoglia padre = trovaNodo(listaG.getGerarchie(), id); // Trova il nodo padre
         if (padre != null) 
             padre.aggiungiFiglio(nf, dom); // Aggiunge il figlio se il padre esiste
@@ -443,6 +479,9 @@ public final class Model {
     // Precondizione: 'nf' non deve essere null, 'id' deve essere valido
     // Postcondizione: Aggiunge 'nf' come figlio al nodo padre
     public void aggiungiFiglio(Foglia nf, int id, String dom) {
+        assert nf != null : "la foglia non deve essere null";
+        assert id >= 0 : "l'id deve essere positivo";
+
         Nonfoglia padre = trovaNodo(listaG.getGerarchie(), id); // Trova il nodo padre
         if (padre != null && "foglie".equals(padre.getTipoFigli()))  
             padre.aggiungiFiglio(nf, dom); // Aggiunge il figlio se il padre è di tipo foglia
@@ -452,11 +491,16 @@ public final class Model {
     // Precondizione: 'name' non deve essere null
     // Postcondizione: Restituisce true se il nome è disponibile, false altrimenti
     public boolean isNameClear(String name) {
+        assert name != null : "il nome non deve essere null";
+
         return listaG.isNameClear(name); // Verifica se il nome è libero
     }
 
-
-    public Comprensorio getCompbyName(String nomeComp) {   	 
+    //Metodo che restituisce il comprensorio dato il nome
+    //Precondizione: 'nomeComp' deve essere valido
+    //Postcondizione: restituisce il comprensorio corrispondente al nome
+    public Comprensorio getCompbyName(String nomeComp) {   
+        assert nomeComp != null : "il nome non deve essere null";
     	 
     	for (Comprensorio elem : listaC) {
             if(elem.getNome().equals(nomeComp))
@@ -471,8 +515,7 @@ public final class Model {
     // Precondizione: 'radice' non deve essere null
     // Postcondizione: Restituisce true se tutti i figli sono definiti, false altrimenti
     public boolean controllaFigliDefiniti(Nonfoglia radice) {
-        if (radice == null) 
-            return false; // Restituisce false se la radice è null
+        assert radice != null : "la radice non deve essere null";
 
         for (Categoria figlio : radice.getFigli()) {
             if (figlio == null) {
@@ -491,6 +534,8 @@ public final class Model {
     // Precondizione: 'id' deve essere valido
     // Postcondizione: Restituisce l'oggetto Foglia corrispondente all'id
     public Foglia getFoglia(int id) {
+        assert id >= 0 : "L'ID deve essere positivo";
+
         return listaG.getFoglia(id); // Restituisce la foglia corrispondente all'id
     }
 
@@ -498,6 +543,8 @@ public final class Model {
     // Precondizione: 'nome' non deve essere null
     // Postcondizione: Restituisce true se il nome è disponibile, false altrimenti
     public boolean verificaDisp(String nome) {
+        assert nome != null : "il nome non deve essere nullo";
+
         File file = new File(FILE_NAME);
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
@@ -528,8 +575,18 @@ public final class Model {
         new VisComprensorioApp(this); // Crea un'istanza dell'app per visualizzare un comprensorio
     }
 
+    // Inizializza la classe per la funzione di visualizzare le proposte
+    // Precondizione: Nessuna
+    // Postcondizione: Viene avviata l'app di visualizzazione delle proposte
     public void visualizzaProposteF(){
         new VisProposteF(this);
+    }
+
+    // Inizializza la classe per la funzione di visualizzare gli insiemi chiusi
+    // Precondizione: Nessuna
+    // Postcondizione: Viene avviata l'app di visualizzazione degli insiemi chiusi
+    public void visualizzaInsieme(){
+        new VisInsiemiChiusi(this);
     }
 
     // Inizializza la classe per la funzione di aggiungere una gerarchia
@@ -546,75 +603,142 @@ public final class Model {
         new VisGerarchiaApp(this); // Crea un'istanza dell'app per visualizzare una gerarchia
     }
 
+    // Inizializza la classe per la funzione di creare una nuova proposta
+    // Precondizione: Nessuna
+    // Postcondizione: Viene avviata l'app di creazione di una nuova proposta
     public void nuovaProposta(){
         new NewPropostaApp(this);
     }
 
     private Proposta propostaincorso;
 
-    public void creaProposta(Foglia richiesta, int oreRichieste, Foglia offerta){
+    /**
+     * Crea una nuova proposta basata sui parametri forniti.
+     * 
+     * Precondizioni:
+     * - `richiesta` e `offerta` non devono essere null.
+     * - `oreRichieste` deve essere un numero positivo.
+     * - L'oggetto `fruit` deve essere inizializzato correttamente.
+     * 
+     * Postcondizioni:
+     * - Una nuova proposta viene creata e aggiunta alla lista `listaP`.
+     * - La proposta viene salvata persistentemente.
+     * - Se `trovaScambi` restituisce true, la proposta è soddisfatta; altrimenti, non può essere soddisfatta al momento.
+     */
+    public void creaProposta(Foglia richiesta, int oreRichieste, Foglia offerta) {
+        assert richiesta != null : "La richiesta non può essere null";
+        assert offerta != null : "L'offerta non può essere null";
+        assert oreRichieste >= 0 : "Le ore richieste devono essere positive";
+        assert fruit != null : "L'oggetto fruit non può essere null";
+
         propostaincorso = new Proposta(richiesta, oreRichieste, fruit.getId());
         propostaincorso.soddisfaProposta(offerta);
         listaP.add(propostaincorso);
         System.err.println(propostaincorso.getId());
         propostaincorso.save();
         System.err.println(propostaincorso.toString());
-        if(trovaScambi(propostaincorso))
-            System.err.println("proposta già soddisfatta");
-        else
-            System.err.println("non è possibile soddisfare la proposta al momento");
+
+        if (trovaScambi(propostaincorso)) {
+            System.err.println("Proposta già soddisfatta");
+        } else {
+            System.err.println("Non è possibile soddisfare la proposta al momento");
+        }
     }
 
-    public ArrayList<Integer> getOreConvertite(int id, int ore){
+    /**
+     * Restituisce una lista di interi rappresentanti le ore convertite per un dato ID e un numero di ore specifico.
+     * 
+     * Precondizioni:
+     * - `id` deve essere un numero positivo.
+     * - `ore` deve essere un numero positivo.
+     * 
+     * Postcondizioni:
+     * - Restituisce un ArrayList contenente le ore convertite.
+     */
+    public ArrayList<Integer> getOreConvertite(int id, int ore) {
+        assert id >= 0 : "L'ID deve essere positivo";
+        assert ore >= 0 : "Le ore devono essere positive";
+        
         return listaF.getOreConvertite(id, ore);
     }
 
-   
-
+    /**
+     * Restituisce il nome del comprensorio associato al fruitore specificato tramite il suo ID.
+     * 
+     * Precondizioni:
+     * - `id` deve essere un numero positivo.
+     * 
+     * Postcondizioni:
+     * - Restituisce una stringa che rappresenta il comprensorio, oppure `null` se non trovato.
+     */
     private String getCompByFruitore(int id) {
-    	
+        assert id >= 0 : "L'ID deve essere positivo";
+
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_F))) {
-           
             String linea;
-            int countId = 0;
-            if((linea = reader.readLine()) == null) {
+            int countId;
+            
+            if ((linea = reader.readLine()) == null) {
                 return null;
-            }else {
-                do{
-                    String [] credenziale = linea.split(";");    			
+            } else {
+                do {
+                    String[] credenziale = linea.split(";");
                     countId = Integer.parseInt(credenziale[0]);
-                    if(countId==id){
+                    if (countId == id) {
                         return credenziale[4];
                     }
-                }while((linea = reader.readLine()) != null);
+                } while ((linea = reader.readLine()) != null);
             }
-        }catch (Exception e) {
-            System.err.println("errore nella lettura da file");
+        } catch (Exception e) {
+            System.err.println("Errore nella lettura da file");
         }
         return null;
     }
 
-    public boolean trovaScambi(Proposta a){
+    /**
+     * Trova scambi validi per una proposta specificata.
+     * 
+     * Precondizioni:
+     * - `a` non deve essere null.
+     * 
+     * Postcondizioni:
+     * - Restituisce `true` se è stato trovato uno scambio soddisfacente, `false` altrimenti.
+     */
+    public boolean trovaScambi(Proposta a) {
+        assert a != null : "La proposta non può essere null";
+
         ArrayList<Proposta> cerchio = new ArrayList<>();
         ArrayList<Proposta> proposteNelComp = new ArrayList<>();
         String comp = getCompByFruitore(a.getIdFruitore());
+
         for (Proposta elem : listaP) {
-            if(!elem.equals(a) && elem.getStato().equals("aperta") && getCompByFruitore(elem.getIdFruitore()).equals(comp))
+            if (!elem.equals(a) && elem.getStato().equals("aperta") && getCompByFruitore(elem.getIdFruitore()).equals(comp)) {
                 proposteNelComp.add(elem);
-        }
-        if(proposteNelComp.size() < 1) return false;
-        cerchio.add(a);
-        if(cercaCerchio(proposteNelComp, cerchio)){
-            for (Proposta elem : cerchio) {
-                elem.setStato("chiusa");
-                elem.save();
             }
+        }
+        if (proposteNelComp.size() < 1) return false;
+
+        cerchio.add(a);
+        if (cercaCerchio(proposteNelComp, cerchio)) {
+            salvaInsieme(cerchio);
             return true;
-        } 
+        }
         return false;
     }
-    
+
+    /**
+     * Cerca di formare un cerchio di scambi che soddisfi tutte le proposte.
+     * 
+     * Precondizioni:
+     * - `lista` e `cerchio` non devono essere null.
+     * 
+     * Postcondizioni:
+     * - Restituisce `true` se è stato trovato un cerchio valido, `false` altrimenti.
+     */
     private boolean cercaCerchio(ArrayList<Proposta> lista, ArrayList<Proposta> cerchio){
+        assert lista != null : "la lista non può essere nulla";
+        assert cerchio != null : "la lista cerchio non deve essere nulla";
+
         int dimCerchio = cerchio.size();
         if(dimCerchio > 1)
             if(cerchio.get(0).getRichiesta().getNome().equals(cerchio.get(dimCerchio-1).getOfferta().getNome()) && cerchio.get(0).getOreRichieste() == cerchio.get(dimCerchio -1).getOreOfferte())
@@ -632,12 +756,217 @@ public final class Model {
         return false;
     }
 
-    public void aggiornaStato(int id, String stato){
-        for(Proposta p : listaP){
-            if(p.getId()==id){
+     /**
+         * Precondizioni:
+         * - `id` deve essere un numero intero positivo (> 0).
+         * - `stato` deve essere una stringa non null e non vuota.
+         * - `listaP` non deve essere null.
+         * 
+         * Postcondizioni:
+         * - Se esiste una `Proposta` in `listaP` con `id` corrispondente, il suo stato viene aggiornato a "ritirata" 
+         *   e le modifiche vengono salvate tramite `p.save()`.
+         * - Se non esiste nessuna proposta con l'id fornito, il metodo non ha alcun effetto.
+         */
+    public void aggiornaStato(int id, String stato) {
+        assert id >= 0 : "id deve essere un numero positivo";
+        assert stato != null : "stato non deve essere null";
+        assert !listaP.isEmpty() : "la lista delle proposte non deve essere null";
+
+        for (Proposta p : listaP) {
+            if (p.getId() == id) {
                 p.setStato("ritirata");
                 p.save();
             }
         }
     }
+    
+    /**
+     * Precondizioni:
+     * - `id` deve essere un numero intero positivo (> 0).
+     * 
+     * Postcondizioni:
+     * - Restituisce il nome del fruitore se esiste un record corrispondente all'`id` fornito nel file `FILE_F`.
+     * - Restituisce `null` se l'`id` non è trovato o se si verifica un errore durante la lettura del file.
+     */
+    public String getFruitoreName(int id) {
+        assert id >= 0 : "l'id deve essere un numero positivo";
+    	
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_F))) {
+           
+            String linea;
+            int countId;
+            if((linea = reader.readLine()) == null) {
+                return null;
+            }else {
+                do{
+                    String [] credenziale = linea.split(";");    			
+                    countId = Integer.parseInt(credenziale[0]);
+                    if(countId==id){
+                        return credenziale[1];
+                    }
+                }while((linea = reader.readLine()) != null);
+            }
+        }catch (Exception e) {
+            System.err.println("errore nella lettura da file");
+        }
+        return null;
+    }
+
+    /**
+     * Precondizioni:
+     * - `id` deve essere un numero intero positivo (> 0).
+     * 
+     * Postcondizioni:
+     * - Restituisce l'indirizzo email del fruitore se esiste un record corrispondente all'`id` fornito nel file `FILE_F`.
+     * - Restituisce `null` se l'`id` non è trovato o se si verifica un errore durante la lettura del file.
+     */
+    public String getFruitoreMail(int id) {
+    	assert id >= 0 : "l'id deve essere un numero positivo";
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_F))) {
+           
+            String linea;
+            int countId;
+            if((linea = reader.readLine()) == null) {
+                return null;
+            }else {
+                do{
+                    String [] credenziale = linea.split(";");    			
+                    countId = Integer.parseInt(credenziale[0]);
+                    if(countId==id){
+                        return credenziale[3];
+                    }
+                }while((linea = reader.readLine()) != null);
+            }
+        }catch (Exception e) {
+            System.err.println("errore nella lettura da file");
+        }
+        return null;
+    }
+
+
+    /**
+     * Precondizioni:
+     * - `cerchio` non deve essere null.
+     * - `cerchio` deve contenere almeno un elemento (cerchio.size() > 0).
+     * - Ogni elemento di `cerchio` non deve essere null.
+     * 
+     * Postcondizioni:
+     * - Lo stato di ogni `Proposta` in `cerchio` viene impostato su "chiusa" e salvato.
+     * - Se il file `FILE_NAME_I` non esiste, viene creato.
+     * - Il contenuto del `cerchio` viene aggiunto al file `FILE_NAME_I`, seguito da una riga "---".
+     * - In caso di errori durante la creazione, lettura o scrittura del file, viene stampato un messaggio di errore.
+     */
+    public void salvaInsieme(ArrayList<Proposta> cerchio){
+        assert !cerchio.isEmpty() : "cerchio vuoto non produce alcun effetto";
+
+        for (Proposta elem : cerchio) {
+            elem.setStato("chiusa");
+            elem.save();
+        }
+
+        // Verifica se il file esiste e lo crea se necessario
+        File file = new File(FILE_NAME_I);
+        try {
+            if (!file.exists()) {
+                file.createNewFile(); // Crea il file se non esiste
+            }
+        } catch (IOException e) {
+            System.err.println("errore nella lettura del file");
+            return; // Esce dal metodo se la creazione del file fallisce
+        }
+
+        List<String> fileContent = new ArrayList<>(); // Lista per memorizzare il contenuto del file
+
+        // Legge il contenuto dell'intero file
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+
+            // Legge ogni riga del file
+            while ((line = reader.readLine()) != null) 
+                fileContent.add(line); // Mantiene le altre righe invariate
+
+        } catch (IOException e) {
+            System.err.println("errore nella lettura del file");
+        }
+
+        for (Proposta elem : cerchio)
+                fileContent.add(elem.toString());
+
+        fileContent.add("---");
+
+        // Scrive il contenuto aggiornato nel file
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            for (String line : fileContent) {
+                writer.write(line);  // Scrive ogni riga nel file
+                writer.newLine();    // Aggiunge una nuova linea dopo ogni riga
+            }
+        } catch (IOException e) {
+            System.err.println("errore nella scrittura del file");
+        }
+    }
+
+    /**
+     * Precondizioni:
+     * - `FILE_NAME_I` deve essere un percorso valido leggibile.
+     * 
+     * Postcondizioni:
+     * - Restituisce un `ArrayList` contenente i gruppi di stringhe letti dal file `FILE_NAME_I`.
+     * - Ogni gruppo è delimitato da una linea che inizia con "-".
+     * - Se il file è vuoto o si verifica un errore durante la lettura, restituisce un `ArrayList` vuoto.
+     */
+    public ArrayList<String> caricaInsiemiChiusi(){
+        ArrayList<String> insiemi = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME_I))) {
+            String line;
+            StringBuilder ins = new StringBuilder();
+            while ((line = reader.readLine()) != null) {
+                if(line.startsWith("-")){
+                    insiemi.add(ins.toString());
+                    ins.setLength(0);
+                }   
+                else{
+                    ins.append(line).append("%");
+                } 
+            }
+        } catch (IOException e) {
+            System.err.println("Errore nella lettura da file"); // Stampa un errore in caso di problemi di lettura
+        }
+
+        return insiemi;
+    }
+
+    /**
+     * Precondizioni:
+     * - `id` deve essere un numero intero positivo (> 0).
+     * - `FILE_P` deve essere un percorso valido leggibile.
+     * 
+     * Postcondizioni:
+     * - Restituisce un `ArrayList` contenente tutte le proposte nel file `FILE_P` che corrispondono all'`id` dato.
+     * - Se non ci sono proposte corrispondenti, restituisce un `ArrayList` vuoto.
+     * - In caso di errore durante la lettura del file, restituisce un `ArrayList` vuoto e stampa un messaggio di errore.
+     */
+    public ArrayList<String> caricaProposteById(int id){
+        assert id >= 0 : "id deve essere un numero positivo";
+
+        ArrayList<String> lista = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_P))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] elems = line.split(";");
+                int idRic = Integer.parseInt(elems[1].split(":")[1].trim());
+                int idProp = Integer.parseInt(elems[3].split(":")[1].trim());
+                if(id == idRic || id == idProp){
+                    lista.add(line);
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Errore nella lettura da file"); // Stampa un errore in caso di problemi di lettura
+        }
+
+        return lista;
+    }
+
 }

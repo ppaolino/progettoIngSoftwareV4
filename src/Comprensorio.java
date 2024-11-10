@@ -30,6 +30,14 @@ public class Comprensorio {
         this.comuni = new ArrayList<>(); // Inizializza la lista dei comuni associati
     }
 
+    /**
+     * Costruttore per creare un nuovo comprensorio con i dati caricati dal file.
+     *
+     * @param nome il nome del comprensorio
+     * @pre nome != null && !nome.isEmpty(); // Assicurati che il nome non sia nullo o vuoto
+     * @post this.nome.equals(nome); // Assicurati che il nome sia stato impostato correttamente
+     * @post this.comuni.equals(comuni) //Assicurati che la lista dei comuni sia impostata correttamente
+     */
     public Comprensorio(String nome, ArrayList<String> limitrofi) {			//NUOVO COSTRUTTORE---------------------------------------------
         if (nome == null || nome.isEmpty()) {
             throw new IllegalArgumentException("Il nome del comprensorio non può essere nullo o vuoto.");
