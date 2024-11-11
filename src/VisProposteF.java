@@ -9,7 +9,7 @@ public class VisProposteF {
     private JComboBox<String> comboBox;
     private JPanel proposalPanel;
 
-    private final Model model;
+    private final Controller controller;
     private int counter = 0;
     private final Fruitore f;
     private ArrayList<Proposta> listaP;
@@ -18,18 +18,18 @@ public class VisProposteF {
 
     /**
      * Precondizioni:
-     * - `model` non deve essere null.
-     * - Il `model` deve avere un `Fruitore` associato.
+     * - `controller` non deve essere null.
+     * - Il `controller` deve avere un `Fruitore` associato.
      * 
      * Postcondizioni:
      * - L'istanza `VisProposteF` è inizializzata correttamente.
      * - Viene invocato il metodo `initialize()`.
      */
-    public VisProposteF(Model model) {
-        assert model != null : "il model deve essere valido";
+    public VisProposteF(Controller controller) {
+        assert controller != null : "il controller deve essere valido";
 
-        this.model = model;
-        this.f = model.getFruitore();
+        this.controller = controller;
+        this.f = controller.getFruitore();
         initialize();
     }
 
@@ -71,7 +71,7 @@ public class VisProposteF {
 
     /**
      * Precondizioni:
-     * - Il `model` deve contenere una lista di `Proposta`.
+     * - Il `controller` deve contenere una lista di `Proposta`.
      * 
      * Postcondizioni:
      * - Viene creata e visualizzata una finestra `JFrame`.
@@ -80,7 +80,7 @@ public class VisProposteF {
      */
     @SuppressWarnings("unused")
     private void initialize() {
-        this.listaP = model.getProposte();
+        this.listaP = controller.getProposte();
         initializeDataMap();
         window = new JFrame("Visualizza tutte le proposte");
         window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -188,7 +188,7 @@ public class VisProposteF {
     /**
      * Precondizioni:
      * - `proposta` non deve essere null.
-     * - Il `model` deve supportare il metodo `aggiornaStato`.
+     * - Il `controller` deve supportare il metodo `aggiornaStato`.
      * 
      * Postcondizioni:
      * - Lo stato della proposta viene aggiornato a "ritirata".
@@ -198,7 +198,7 @@ public class VisProposteF {
     private void performActionOnProposal(Proposta proposta) {
         assert proposta != null : "proposta deve esistere";
         
-        model.aggiornaStato(proposta.getId(), "ritirata");
+        controller.aggiornaStato(proposta.getId(), "ritirata");
         JOptionPane.showMessageDialog(window, "La proposta " + proposta.getRichiesta().getNome() +
                 " --> " + proposta.getOfferta().getNome() + " è stata ritirata");
         window.removeAll();

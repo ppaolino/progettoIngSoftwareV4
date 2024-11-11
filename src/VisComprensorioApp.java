@@ -17,22 +17,22 @@ public class VisComprensorioApp {
     private JComboBox<String> comboBox; // Menù a tendina per i comprensori
     private JTextArea txtArea; // Area di testo per visualizzare i comuni
 
-    private final Model model; // Modello dei dati
+    private final Controller controller; // controllerlo dei dati
 
     /**
      * Costruttore per VisComprensorioApp
      * 
-     * @param model il modello dei dati contenente i comprensori geografici
+     * @param controller il controllerlo dei dati contenente i comprensori geografici
      */
-    public VisComprensorioApp(Model model) {
-        this.model = model; // Inizializza il modello
+    public VisComprensorioApp(Controller controller) {
+        this.controller = controller; // Inizializza il controllerlo
         initialize(); // Inizializza l'interfaccia grafica
     }
 
     /**
      * Inizializza l'interfaccia grafica e i suoi componenti.
      * 
-     * Precondizione: il modello deve contenere una lista di comprensori valida.
+     * Precondizione: il controllerlo deve contenere una lista di comprensori valida.
      * Postcondizione: la finestra è configurata e visibile con i comprensori caricati nella comboBox.
      */
     @SuppressWarnings("unused")
@@ -59,7 +59,7 @@ public class VisComprensorioApp {
         pane.add(scroll, BorderLayout.CENTER);
 
         // Carica i nomi dei comprensori nel JComboBox
-        ArrayList<Comprensorio> listaC = model.getComprensori();
+        ArrayList<Comprensorio> listaC = controller.getComprensori();
         for (Comprensorio elem : listaC) {
             comboBox.addItem(elem.getNome());
         }

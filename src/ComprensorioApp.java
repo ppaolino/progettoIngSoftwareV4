@@ -27,7 +27,7 @@ public class ComprensorioApp {
     private List<JCheckBox> checkBoxes; // JCheckBox per ogni opzione filtrata
     private List<String> selectedOptions; // Lista delle opzioni selezionate
 
-    private final Model model;
+    private final Controller controller;
     private final ComuniInfo info = ComuniInfo.getInstance();
     private Comprensorio comp;
 
@@ -37,15 +37,15 @@ public class ComprensorioApp {
     private static final int LABEL_HEIGHT = 46;
     private static final int BUTTON_HEIGHT = 46;
 
-    public ComprensorioApp(Model model) {
-        this.model = model;
+    public ComprensorioApp(Controller controller) {
+        this.controller = controller;
         initialize();
     }
 
     /**
      * Inizializza l'interfaccia utente.
      * 
-     * Precondizione: model deve essere un'istanza valida di Model.
+     * Precondizione: controller deve essere un'istanza valida di controller.
      * Postcondizione: L'interfaccia utente è visibile e pronta per l'interazione.
      */
     @SuppressWarnings("unused")
@@ -120,8 +120,8 @@ public class ComprensorioApp {
                 return;
             }
             // Verifica se il nome del comprensorio è disponibile
-            if (model.verificaDisp(nomeComprensorio)) {
-                comp = model.creaComprensorio(nomeComprensorio);
+            if (controller.verificaDisp(nomeComprensorio)) {
+                comp = controller.creaComprensorio(nomeComprensorio);
                 txtNomeC.setEditable(false);
                 searchField.setVisible(true);
                 scrTemp.setVisible(true);
@@ -152,7 +152,7 @@ public class ComprensorioApp {
         showSelectedButton.addActionListener(e -> {
             // Postcondizione: selezionare i comuni non deve modificare lo stato del comprensorio in modo errato
             if (confirmSelectedOptions()) {
-                model.salvaComprensori();
+                controller.salvaComprensori();
                 software.dispose();
             }
         });

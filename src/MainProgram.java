@@ -9,7 +9,7 @@ public class MainProgram {
 
     private JFrame frame;
     private final JPanel pannello;
-    private final Model model;
+    private final Controller controller;
 
     /**
      * Metodo principale che avvia l'applicazione.
@@ -38,12 +38,12 @@ public class MainProgram {
      * - Nessuna.
      * 
      * Postcondizioni:
-     * - Inizializza il modello e la finestra principale con i relativi componenti.
+     * - Inizializza il controllerlo e la finestra principale con i relativi componenti.
      * - Crea due pulsanti "FRUITORE" e "CONFIGURATORE" con le relative funzionalità.
      */
     @SuppressWarnings("unused")
     public MainProgram() {
-        model = new Model();
+        controller = new Controller();
 
         frame = new JFrame("Scelta tipologia di utente");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -66,14 +66,14 @@ public class MainProgram {
          * Listener per il pulsante "CONFIGURATORE".
          * 
          * Precondizioni:
-         * - `model` non deve essere null.
+         * - `controller` non deve essere null.
          * 
          * Postcondizioni:
          * - Avvia la finestra di configurazione (`LoginApp`) e nasconde la finestra principale.
          */
         btnConfig.addActionListener(e -> {
-            assert model != null : "Il model non può essere null";
-            LoginApp window = new LoginApp(model);
+            assert controller != null : "Il controller non può essere null";
+            LoginApp window = new LoginApp(controller);
             window.setVisible();
             frame.setVisible(false);
         });
@@ -82,14 +82,14 @@ public class MainProgram {
          * Listener per il pulsante "FRUITORE".
          * 
          * Precondizioni:
-         * - `model` non deve essere null.
+         * - `controller` non deve essere null.
          * 
          * Postcondizioni:
          * - Avvia la finestra di login per il fruitore (`LoginFruitore`) e nasconde la finestra principale.
          */
         btnFruitore.addActionListener(e -> {
-            assert model != null : "Il model non può essere null";
-            new LoginFruitore(model);
+            assert controller != null : "Il controller non può essere null";
+            new LoginFruitore(controller);
             frame.setVisible(false);
         });
     }

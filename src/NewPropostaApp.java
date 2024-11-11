@@ -13,13 +13,13 @@ import javax.swing.border.LineBorder;
  * Classe NewPropostaApp
  * 
  * Rappresenta una applicazione grafica per la compilazione di proposte.
- * Utilizza un modello (Model) per la gestione dei dati e Swing per l'interfaccia utente.
+ * Utilizza un controllerlo (controller) per la gestione dei dati e Swing per l'interfaccia utente.
  */
 public class NewPropostaApp {
 
     private JFrame software; // Finestra principale
     private JPanel panel; // Pannello principale
-    private final Model model; // Modello dei dati
+    private final Controller controller; // controllerlo dei dati
     private JPanel treePanel; // Pannello per visualizzare l'albero
     private JButton conferma;            // Pulsante per confermare l'inserimento
     private final JFrame infoFrame = new JFrame();
@@ -30,21 +30,21 @@ public class NewPropostaApp {
     /**
      * Costruttore per NewPropostaApp
      * 
-     * @param model il modello dei dati
+     * @param controller il controllerlo dei dati
      */
-    public NewPropostaApp(Model model) {
-        this.model = model; // Inizializza il modello
+    public NewPropostaApp(Controller controller) {
+        this.controller = controller; // Inizializza il controllerlo
         swInitialize(); // Chiama il metodo per inizializzare l'interfaccia grafica
     }
 
     /**
      * Inizializza l'interfaccia grafica e i suoi componenti.
      * 
-     * Precondizione: Il modello deve essere inizializzato correttamente.
+     * Precondizione: Il controllerlo deve essere inizializzato correttamente.
      */
     @SuppressWarnings("unused")
     private void swInitialize() {
-        assert model != null : "modello deve essere inizializzato";
+        assert controller != null : "controllerlo deve essere inizializzato";
 
         software = new JFrame("Crea proposta"); // Crea la finestra principale
         software.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Chiudi l'app quando la finestra è chiusa
@@ -56,7 +56,7 @@ public class NewPropostaApp {
         panel = new JPanel(new BorderLayout());
         panel.setBackground(Color.WHITE); // Imposta il colore di sfondo
        
-        ArrayList<Nonfoglia> listaGer = model.getListaGerarchie(); // Ottieni la lista delle gerarchie
+        ArrayList<Nonfoglia> listaGer = controller.getListaGerarchie(); // Ottieni la lista delle gerarchie
         HashMap<String, Integer> gerarchie = new HashMap<>(); // Mappa per associare nomi a ID
 
         // Popola la mappa con i nomi e gli ID
@@ -84,7 +84,7 @@ public class NewPropostaApp {
 
             int id = gerarchie.get((String) comboBox.getSelectedItem());
             try {
-                Nonfoglia radice = model.getGerarchia(id);
+                Nonfoglia radice = controller.getGerarchia(id);
                 if (treePanel != null) {
                     panel.remove(treePanel);
                 }
@@ -195,7 +195,7 @@ public class NewPropostaApp {
                 if(richiesta == null || node instanceof Nonfoglia)
                     hoverText = new JLabel(info(node), SwingConstants.CENTER);
                 else if(node.getId() != richiesta.getId())
-                    hoverText = new JLabel("<html><body>ore necessarie per soddisfare la richiesta:<br>" + model.getOreConvertite(richiesta.getId(), number).get(node.getId()) + "</body></html>");
+                    hoverText = new JLabel("<html><body>ore necessarie per soddisfare la richiesta:<br>" + controller.getOreConvertite(richiesta.getId(), number).get(node.getId()) + "</body></html>");
                 else
                     hoverText = new JLabel("categoria richiesta");
                 
@@ -227,7 +227,7 @@ public class NewPropostaApp {
         label.addActionListener(e -> {
             if(richiesta == null){
                 int id = Integer.parseInt(e.getActionCommand());
-                Foglia ric = model.getFoglia(id);
+                Foglia ric = controller.getFoglia(id);
                 if(ric != null) richiesta = ric;
 
                 boolean validInput = false;
@@ -279,8 +279,8 @@ public class NewPropostaApp {
             }
             else if(richiesta != null){
                 int id = Integer.parseInt(e.getActionCommand());
-                Foglia offerta = model.getFoglia(id);
-                if(offerta != null) model.creaProposta(richiesta, number, offerta);
+                Foglia offerta = controller.getFoglia(id);
+                if(offerta != null) controller.creaProposta(richiesta, number, offerta);
                 hoverWindow.getContentPane().removeAll();
                 hoverWindow.setVisible(false);
                 hoverWindow.dispose();
@@ -359,7 +359,7 @@ public class NewPropostaApp {
                 s.append("<html><body>");
                 for (int i = 0; i < fattori.size(); i++) {
                     if (i != f.getId()) {
-                        Foglia ff = model.getFoglia(i);
+                        Foglia ff = controller.getFoglia(i);
                         s.append(ff.getNome()).append("<br>").append(String.format("%.2f", fattori.get(i))).append("<br>");
                     }
                 }

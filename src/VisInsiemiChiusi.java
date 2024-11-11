@@ -10,22 +10,22 @@ public class VisInsiemiChiusi {
     private JFrame window; // Finestra principale
     private JTextArea txtArea; // Area di testo per visualizzare i comuni
 
-    private final Model model; // Modello dei dati
+    private final Controller controller; // controllerlo dei dati
 
     /**
      * Costruttore per VisInsiemiChiusi
      * 
-     * @param model il modello dei dati contenente gli insiemi chiusi
+     * @param controller il controllerlo dei dati contenente gli insiemi chiusi
      */
-    public VisInsiemiChiusi(Model model) {
-        this.model = model; // Inizializza il modello
+    public VisInsiemiChiusi(Controller controller) {
+        this.controller = controller; // Inizializza il controllerlo
         initialize(); // Inizializza l'interfaccia grafica
     }
 
     /**
      * Inizializza l'interfaccia grafica e i suoi componenti.
      * 
-     * Precondizione: il modello deve contenere una lista di comprensori valida.
+     * Precondizione: il controllerlo deve contenere una lista di comprensori valida.
      * Postcondizione: la finestra è configurata e visibile con i comprensori caricati nella comboBox.
      */
     private void initialize() {
@@ -46,7 +46,7 @@ public class VisInsiemiChiusi {
         pane.add(scroll, BorderLayout.CENTER);
 
         // Carica gli insiemi chiusi nel JComboBox
-        ArrayList<String> lista = model.caricaInsiemiChiusi();
+        ArrayList<String> lista = controller.caricaInsiemiChiusi();
         txtArea.setText(""); // Ripulisce l'area di testo
         for (String lista1 : lista) {
             String[] proposte = lista1.split("%");
@@ -57,8 +57,8 @@ public class VisInsiemiChiusi {
 
                 String val = elem[6].split(":")[1].trim();
                 int id = Integer.parseInt(val);
-                String nome = model.getFruitoreName(id);
-                String mail = model.getFruitoreMail(id);
+                String nome = controller.getFruitoreName(id);
+                String mail = controller.getFruitoreMail(id);
                 out.append(nome)
                         .append(" (")
                         .append(mail)
@@ -66,12 +66,12 @@ public class VisInsiemiChiusi {
                         .append(elem[4].split(":")[1].trim())
                         .append(" ore di ");
                 
-                nome = model.getFoglia(Integer.parseInt(elem[3].split(":")[1].trim())).getNome();
+                nome = controller.getFoglia(Integer.parseInt(elem[3].split(":")[1].trim())).getNome();
                 out.append(nome)
                         .append(", in cambio di ")
                         .append(elem[2].split(":")[1].trim())
                         .append(" ore di ");
-                nome = model.getFoglia(Integer.parseInt(elem[1].split(":")[1].trim())).getNome();
+                nome = controller.getFoglia(Integer.parseInt(elem[1].split(":")[1].trim())).getNome();
                 out.append(nome);
                 txtArea.append(out.toString() + "\n\n");
             }

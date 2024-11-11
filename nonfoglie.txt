@@ -8,3 +8,4 @@ ID: 6; Nome: ripetizioni per scuola superiore; isRadice: true; tipo dei figli: n
 ID: 7; Nome: matematica; isRadice: false; tipo dei figli: foglie; Tipo: livello; dominio-descrizione-id figlio associato: (biennio - matematica di base - 9)(triennio - matematica avanzata - 10)
 ID: 8; Nome: inglese; isRadice: false; tipo dei figli: foglie; Tipo: livello; dominio-descrizione-id figlio associato: (b1 - inglese livello b1 - 11)(b2 - ingelse livello b2 - 12)
 ID: 9; Nome: informatica; isRadice: false; tipo dei figli: foglie; Tipo: livello; dominio-descrizione-id figlio associato: (base - introduzione all'informatica - 13)
+ID: 11; Nome: ripetizioni per scuola media; isRadice: true; tipo dei figli: foglie; Tipo: materia; dominio-descrizione-id figlio associato: (italiano - ripetizioni per la materia italiano - 14)(matematica - ripetizioni per la materia matematica - 15)

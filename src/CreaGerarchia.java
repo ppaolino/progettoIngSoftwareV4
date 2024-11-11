@@ -8,7 +8,7 @@ import javax.swing.*;
  * Implementa ActionListener per gestire gli eventi di interazione utente.
  */
 public class CreaGerarchia implements ActionListener {
-    private final Model model;           // Modello dei dati per la gerarchia
+    private final Controller controller;           // controllerlo dei dati per la gerarchia
     private JPanel panel;                // Pannello principale per visualizzare gli elementi della GUI
     private JFrame software;             // Finestra principale dell'applicazione
     private JFrame infoRequest;          // Finestra per richieste di informazione
@@ -22,13 +22,13 @@ public class CreaGerarchia implements ActionListener {
 
     /**
      * Costruttore di CreaGerarchia.
-     * Precondizione: `model` non deve essere null.
+     * Precondizione: `controller` non deve essere null.
      * Postcondizione: L'istanza viene inizializzata con `swInitialize()`.
      *
-     * @param model Modello da usare per la gerarchia.
+     * @param controller controllerlo da usare per la gerarchia.
      */
-    public CreaGerarchia(Model model) {
-        this.model = model;       // Inizializza il modello dei dati
+    public CreaGerarchia(Controller controller) {
+        this.controller = controller;       // Inizializza il controllerlo dei dati
         swInitialize();           // Chiama il metodo per l'inizializzazione della GUI
     }
 
@@ -79,7 +79,7 @@ public class CreaGerarchia implements ActionListener {
         if ("lancia".equals(e.getActionCommand())) { // Azione per il comando 'lancia'
             String name = insertName.getText();
             if (!"".equals(name)) {   // Controllo del nome non vuoto
-                if (model.isNameClear(name)) {  // Controlla se il nome è disponibile
+                if (controller.isNameClear(name)) {  // Controlla se il nome è disponibile
                     software.setTitle("Creazione della gerarchia " + name);
                     //labelTestoIni.setForeground(Color.BLACK);
                     nf = creaNonfoglia(name, true, "inutile", -1);
@@ -151,7 +151,7 @@ public class CreaGerarchia implements ActionListener {
                 throw new IllegalArgumentException("ID errato: deve essere un numero valido.");
             }
 
-            Object[] possibilities = model.cercaNodo(nf, id).getDominiDisp().toArray();
+            Object[] possibilities = controller.cercaNodo(nf, id).getDominiDisp().toArray();
             String s = "";
             while ((s == null) || (s.length() < 1)) {
                 s = (String) JOptionPane.showInputDialog(
@@ -165,8 +165,8 @@ public class CreaGerarchia implements ActionListener {
             if (tipoFiglio.equals("non foglie") && id >= 0) creaNonfoglia("", false, s, id);
             else if (tipoFiglio.equals("foglie")) creaFoglia(s, id);
         } else if ("conferma".equals(e.getActionCommand())) { // Azione per confermare la gerarchia
-            if (model.controllaFigliDefiniti(nf)) {
-                model.salvaGerarchie();
+            if (controller.controllaFigliDefiniti(nf)) {
+                controller.salvaGerarchie();
                 software.dispose();
             } else {
                 JOptionPane.showMessageDialog(infoRequest, "Completa l'inserimento prima di continuare.");
@@ -198,7 +198,7 @@ public class CreaGerarchia implements ActionListener {
 
     /**
      * Crea una foglia all'interno della gerarchia.
-     * Precondizione: `dom` e `idPadre` devono essere validi e `model` deve essere inizializzato.
+     * Precondizione: `dom` e `idPadre` devono essere validi e `controller` deve essere inizializzato.
      * Postcondizione: Una nuova foglia è aggiunta alla gerarchia con i dettagli specificati dall'utente.
      * 
      * @param dom Dominio o categoria a cui appartiene la foglia.
@@ -223,7 +223,7 @@ public class CreaGerarchia implements ActionListener {
         boolean isOk = false;
 
         // Ottiene le opzioni disponibili per le foglie
-        ArrayList<String> possibilities = model.getAllLeaves();
+        ArrayList<String> possibilities = controller.getAllLeaves();
 
         if (!possibilities.isEmpty()) {
             // Crea un pannello con pulsanti radio per la selezione
@@ -309,7 +309,7 @@ public class CreaGerarchia implements ActionListener {
         }
 
         // Crea la foglia con i parametri specificati
-        model.creaFoglia(name, fattore, idfattore, idPadre, dom);
+        controller.creaFoglia(name, fattore, idfattore, idPadre, dom);
         aggiornaTree(); // Aggiorna l'albero di visualizzazione
     }
 
@@ -448,8 +448,8 @@ public class CreaGerarchia implements ActionListener {
         // Determina il tipo di figli (non foglie o foglie) in base alla scelta dell'utente
         String tipoFigli = n == 0 ? "non foglie" : "foglie";
 
-        // Crea l'oggetto Nonfoglia utilizzando il metodo del modello
-        Nonfoglia nnf = model.creaNonFoglia(name, campo, dominio, desc, isRadice, IdPadre, dom, tipoFigli);
+        // Crea l'oggetto Nonfoglia utilizzando il metodo del controllerlo
+        Nonfoglia nnf = controller.creaNonFoglia(name, campo, dominio, desc, isRadice, IdPadre, dom, tipoFigli);
 
         // Serializza e stampa l'oggetto Nonfoglia per il debug
         System.err.println(nnf.serialize());

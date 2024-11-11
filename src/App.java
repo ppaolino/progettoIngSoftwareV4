@@ -17,27 +17,27 @@ public class App {
     private JFrame software; // Finestra principale dell'applicazione
     private JPanel panel2; // Pannello principale per i componenti della UI
     private boolean utente; //true = configuratore, false = fruitore
-    private final Model model; // Modello di dati usato per gestire le operazioni
+    private final Controller controller; // controllerlo di dati usato per gestire le operazioni
 
     /**
-     * Costruttore della classe App che inizializza il modello e l'interfaccia se il configuratore è disponibile.
+     * Costruttore della classe App che inizializza il controllerlo e l'interfaccia se il configuratore è disponibile.
      * 
-     * @param model il modello di dati da utilizzare
-     * @pre model != null; // Assicurati che il modello non sia nullo
+     * @param controller il controllerlo di dati da utilizzare
+     * @pre controller != null; // Assicurati che il controllerlo non sia nullo
      */
-    public App(Model model) {
+    public App(Controller controller) {
         // Precondizione
-        if (model == null) {
-            throw new IllegalArgumentException("Il modello non può essere nullo.");
+        if (controller == null) {
+            throw new IllegalArgumentException("Il controllerlo non può essere nullo.");
         }
         
-        this.model = model;
+        this.controller = controller;
         
         // Verifica se il configuratore esiste prima di avviare l'interfaccia
-        if (model.getConfiguratore() != null) {
+        if (controller.getConfiguratore() != null) {
             utente = true;
         }
-        else if(model.getFruitore() != null){
+        else if(controller.getFruitore() != null){
             utente = false;
         }
         else{
@@ -51,7 +51,7 @@ public class App {
      * Metodo per l'inizializzazione dell'interfaccia utente.
      * Imposta la finestra principale, il pannello e i componenti UI.
      * 
-     * @pre model.getConfiguratore() != null; // Assicurati che il configuratore esista
+     * @pre controller.getConfiguratore() != null; // Assicurati che il configuratore esista
      * @post software != null; // Assicurati che la finestra sia inizializzata
      */
     private void swInitialize() {
@@ -73,9 +73,9 @@ public class App {
         // Etichetta di benvenuto con il nome dell'utente
         JLabel lblRichiesta;
         if(utente)
-            lblRichiesta = new JLabel("Benvenuto " + model.getConfiguratore().getUsername() + ", cosa desideri fare?", SwingConstants.CENTER);
+            lblRichiesta = new JLabel("Benvenuto " + controller.getConfiguratore().getUsername() + ", cosa desideri fare?", SwingConstants.CENTER);
         else
-            lblRichiesta = new JLabel("Benvenuto " + model.getFruitore().getUsername() + ", cosa desideri fare?", SwingConstants.CENTER);
+            lblRichiesta = new JLabel("Benvenuto " + controller.getFruitore().getUsername() + ", cosa desideri fare?", SwingConstants.CENTER);
         FontMetrics metrics = lblRichiesta.getFontMetrics(lblRichiesta.getFont());
         int textWidth = metrics.stringWidth(lblRichiesta.getText());
         lblRichiesta.setFont(new Font("Tahoma", Font.PLAIN, 22));
@@ -116,33 +116,33 @@ public class App {
             
             // Switch per determinare l'azione in base all'opzione selezionata
             switch (scelta) {
-                case 0 -> model.visualizzaGerarchia();
+                case 0 -> controller.visualizzaGerarchia();
                 case 1 -> 
                 {
                     if(utente)
-                        model.visualizzaComprensorio(); 
+                        controller.visualizzaComprensorio(); 
                     else
-                        model.nuovaProposta();
+                        controller.nuovaProposta();
                 }
                 
                 case 2 -> {
                     if(utente){
-                        model.creaGerarchia();
+                        controller.creaGerarchia();
                     // Postcondizione: una nuova gerarchia deve essere stata creata
-                    assert !model.getListaGerarchie().isEmpty() : "Nessuna gerarchia creata.";
+                    assert !controller.getListaGerarchie().isEmpty() : "Nessuna gerarchia creata.";
                     }
                     else{
-                        model.visualizzaProposteF();
+                        controller.visualizzaProposteF();
                     }
                     
                 }
                 case 3 -> {
-                    model.aggiungiComprensorio();
+                    controller.aggiungiComprensorio();
                     // Postcondizione: un nuovo comprensorio deve essere stato aggiunto
-                    assert !model.getComprensori().isEmpty() : "Nessun comprensorio aggiunto.";
+                    assert !controller.getComprensori().isEmpty() : "Nessun comprensorio aggiunto.";
                 }
                 case 4 -> {
-                    model.visualizzaInsieme();
+                    controller.visualizzaInsieme();
                 }
                 default -> System.out.println("Nessuna azione disponibile.");
             }

@@ -14,29 +14,29 @@ import javax.swing.border.LineBorder;
  * Classe VisGerarchiaApp
  * 
  * Rappresenta una applicazione grafica per la visualizzazione di gerarchie di dati.
- * Utilizza un modello (Model) per la gestione dei dati e Swing per l'interfaccia utente.
+ * Utilizza un controllerlo (controller) per la gestione dei dati e Swing per l'interfaccia utente.
  */
 public class VisGerarchiaApp {
 
     private JFrame software; // Finestra principale
     private JPanel panel2; // Pannello principale
-    private final Model model; // Modello dei dati
+    private final Controller controller; // controllerlo dei dati
     private JPanel treePanel; // Pannello per visualizzare l'albero
 
     /**
      * Costruttore per VisGerarchiaApp
      * 
-     * @param model il modello dei dati per la gerarchia da visualizzare
+     * @param controller il controllerlo dei dati per la gerarchia da visualizzare
      */
-    public VisGerarchiaApp(Model model) {
-        this.model = model; // Inizializza il modello
+    public VisGerarchiaApp(Controller controller) {
+        this.controller = controller; // Inizializza il controllerlo
         swInitialize(); // Chiama il metodo per inizializzare l'interfaccia grafica
     }
 
     /**
      * Inizializza l'interfaccia grafica e i suoi componenti.
      * 
-     * Precondizione: Il modello deve essere inizializzato correttamente.
+     * Precondizione: Il controllerlo deve essere inizializzato correttamente.
      */
     private void swInitialize() {
         software = new JFrame("Visualizzazione gerarchie"); // Crea la finestra principale
@@ -56,7 +56,7 @@ public class VisGerarchiaApp {
 
         software.add(scrollPane, BorderLayout.CENTER); // Aggiungi lo JScrollPane alla finestra principale
 
-        List<Nonfoglia> listaGer = model.getListaGerarchie(); // Ottieni la lista delle gerarchie
+        List<Nonfoglia> listaGer = controller.getListaGerarchie(); // Ottieni la lista delle gerarchie
         HashMap<String, Integer> gerarchie = new HashMap<>(); // Mappa per associare nomi a ID
 
         // Popola la mappa con i nomi e gli ID
@@ -71,7 +71,7 @@ public class VisGerarchiaApp {
         comboBox.addActionListener((@SuppressWarnings("unused") ActionEvent e) -> {
             int id = gerarchie.get((String) comboBox.getSelectedItem());
             try {
-                Nonfoglia radice = model.getGerarchia(id);
+                Nonfoglia radice = controller.getGerarchia(id);
                 if (treePanel != null) {
                     panel2.remove(treePanel);
                 }
@@ -215,7 +215,7 @@ public class VisGerarchiaApp {
                 }
             }
         }
-        else if(model.getFruitore() == null){ //se il nodo è una foglia e l'utente è un cconfiguratore mostra tutte le proposte che coinvolgono la foglia
+        else if(controller.getFruitore() == null){ //se il nodo è una foglia e l'utente è un cconfiguratore mostra tutte le proposte che coinvolgono la foglia
             label.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Imposta il cursore come una mano
 
             label.addMouseListener(new MouseAdapter() {
@@ -279,7 +279,7 @@ public class VisGerarchiaApp {
             s.append("<html><body>");
             for (int i = 0; i < fattori.size(); i++) {
                 if (i != f.getId()) {
-                    Foglia ff = model.getFoglia(i);
+                    Foglia ff = controller.getFoglia(i);
                     s.append(ff.getNome()).append("<br>").append(String.format("%.2f", fattori.get(i))).append("<br>");
                 }
             }   
@@ -295,7 +295,7 @@ public class VisGerarchiaApp {
      * @return la stringa  co le informazioni sulla foglia
      */
     private String info2 (int id){
-        ArrayList<String> info = model.caricaProposteById(id);
+        ArrayList<String> info = controller.caricaProposteById(id);
         StringBuilder s = new StringBuilder();
         if(info.isEmpty()) s.append("nessuna proposta contiene questa attività!");
         for (String elem : info) {
@@ -304,15 +304,15 @@ public class VisGerarchiaApp {
             s.append("La proposta ")
                 .append(elems[0].split(":")[1].trim())
                 .append(" dell'utente ")
-                .append(model.getFruitoreName(Integer.parseInt(elems[6].split(":")[1].trim())))
+                .append(controller.getFruitoreName(Integer.parseInt(elems[6].split(":")[1].trim())))
                 .append(": ")
                 .append(elems[2].split(":")[1].trim())
                 .append(" ore di ")
-                .append(model.getFoglia(Integer.parseInt(elems[1].split(":")[1].trim())).getNome())
+                .append(controller.getFoglia(Integer.parseInt(elems[1].split(":")[1].trim())).getNome())
                 .append(" in cambio di ")
                 .append(elems[4].split(":")[1].trim())
                 .append(" ore di ")
-                .append(model.getFoglia(Integer.parseInt(elems[3].split(":")[1].trim())).getNome())
+                .append(controller.getFoglia(Integer.parseInt(elems[3].split(":")[1].trim())).getNome())
                 .append(", è stata ")
                 .append(elems[5].split(":")[1].trim())
                 .append(" in ")

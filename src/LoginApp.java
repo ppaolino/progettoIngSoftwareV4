@@ -10,23 +10,23 @@ public class LoginApp {
     private JFrame frameLogin;           // Finestra principale dell'applicazione
     private JPanel pnlPredefinito;       // Pannello per il login predefinito
     private JPanel pnlLogin;             // Pannello per il login standard
-    private final Model model;           // Modello dell'applicazione
+    private final Controller controller;           // controllerlo dell'applicazione
     
     private boolean primoAccesso = false; // Flag per il primo accesso
 
     /**
      * Costruttore per la classe LoginApp.
-     * Inizializza il modello e crea la GUI per la registrazione.
+     * Inizializza il controllerlo e crea la GUI per la registrazione.
      */
-    public LoginApp(Model model) {    
-        this.model = model;
+    public LoginApp(Controller controller) {    
+        this.controller = controller;
         creaLogin();
     }
 
     /**
      * Metodo per inizializzare la finestra di login predefinito.
      * 
-     * @pre Il frame principale e il modello devono essere inizializzati.
+     * @pre Il frame principale e il controllerlo devono essere inizializzati.
      * @post La finestra di login predefinito è creata e visibile.
      */
     private void initialize() {
@@ -72,7 +72,7 @@ public class LoginApp {
             String username = userText.getText().trim();
             String password = new String(passwordText.getPassword()).trim();
 
-            if (model.validateLogin(username, password)) {
+            if (controller.validateLogin(username, password)) {
                 pnlPredefinito.setVisible(false);
                 login();
             } else {
@@ -90,7 +90,7 @@ public class LoginApp {
     /**
      * Metodo per posizionare i componenti della finestra di login standard.
      * 
-     * @pre Il frame principale e il modello devono essere inizializzati.
+     * @pre Il frame principale e il controllerlo devono essere inizializzati.
      * @post La finestra di login è creata e visibile.
      */
     public void login() {
@@ -148,23 +148,23 @@ public class LoginApp {
                 txtUser.setText(null);
             }
             else if (!primoAccesso) {
-                if (model.listaContains(username, password)) {
+                if (controller.listaContains(username, password)) {
                     frameLogin.setVisible(false);
                     System.out.println("Credenziali corrette! Benvenuto...");
-                    model.creaConfiguratore(username, password);
-                    new App(model);
+                    controller.creaConfiguratore(username, password);
+                    new App(controller);
                 } else {
                     lblExit.setText("Credenziali errate!");
                     txtPass.setText(null);
                     txtUser.setText(null);
                 }
             } else {
-                if (!model.inUso(username)) {
+                if (!controller.inUso(username)) {
                     frameLogin.setVisible(false);
-                    model.salvaConfig(username, password);
+                    controller.salvaConfig(username, password);
                     System.out.println("Nuovo utente creato! Benvenuto...");
-                    model.creaConfiguratore(username, password);
-                    new App(model);
+                    controller.creaConfiguratore(username, password);
+                    new App(controller);
                 } else {
                     lblExit.setText("Username già usato");
                     txtPass.setText(null);
@@ -177,7 +177,7 @@ public class LoginApp {
     /**
      * Crea il menu di accesso, permettendo la scelta tra login e primo accesso.
      * 
-     * @pre Il frame principale e il modello devono essere inizializzati.
+     * @pre Il frame principale e il controllerlo devono essere inizializzati.
      * @post Il menu di accesso è creato e visibile.
      */
     @SuppressWarnings("unused")

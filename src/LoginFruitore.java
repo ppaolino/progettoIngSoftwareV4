@@ -7,20 +7,20 @@ public final class LoginFruitore {
     private JFrame window;
     private JPanel pnlPredefinito;
     private JPanel pnlLogin;
-    private final Model model;
+    private final Controller controller;
 
     /**
      * Costruttore di `LoginFruitore`.
      * 
      * Precondizioni:
-     * - `model` non deve essere null.
+     * - `controller` non deve essere null.
      * 
      * Postcondizioni:
      * - Crea una nuova finestra di login per il fruitore.
      */
-    public LoginFruitore(Model model) {
-        assert model != null : "Il model non può essere null";
-        this.model = model;
+    public LoginFruitore(Controller controller) {
+        assert controller != null : "Il controller non può essere null";
+        this.controller = controller;
         creaLogin();
     }
 
@@ -89,10 +89,10 @@ public final class LoginFruitore {
             if(username.equals("") || password.equals("") || mail.equals("")){
                 messageLabel.setText("Compilare tutti i campi");
             }
-            else if (!model.inUso(username) && isValidEmail(mail)) {
+            else if (!controller.inUso(username) && isValidEmail(mail)) {
                 window.setVisible(false);
-                model.creaFruitore(username, password, mail, comp);
-                new App(model); // Entra nell'app
+                controller.creaFruitore(username, password, mail, comp);
+                new App(controller); // Entra nell'app
             } else {
                 messageLabel.setText("Dati errati! Riprova.");
                 passwordText.setText(null);
@@ -155,9 +155,9 @@ public final class LoginFruitore {
             if(username.equals("") || password.equals("")){
                 lblExit.setText("Compilare tutti i campi");
             }
-            else if (model.listaContainsF(username, password)) {
+            else if (controller.listaContainsF(username, password)) {
                 window.setVisible(false);
-                new App(model); // Entra nell'app
+                new App(controller); // Entra nell'app
             } else {
                 lblExit.setText("Credenziali errate!");
                 txtPass.setText(null);
@@ -191,8 +191,8 @@ public final class LoginFruitore {
 
         btnRegistrati.addActionListener(e -> {
             ArrayList<String> opt = new ArrayList<>();
-            if (model.getComprensori() != null) {
-                for (Comprensorio rigaC : model.getComprensori()) {
+            if (controller.getComprensori() != null) {
+                for (Comprensorio rigaC : controller.getComprensori()) {
                     opt.add(rigaC.getNome());
                 }
             }
@@ -202,7 +202,7 @@ public final class LoginFruitore {
             int option = JOptionPane.showConfirmDialog(null, scrollPane, "Seleziona un comprensorio", JOptionPane.OK_CANCEL_OPTION);
 
             if (option == JOptionPane.OK_OPTION && list.getSelectedValue() != null) {
-                Comprensorio comp = model.getCompbyName(list.getSelectedValue());
+                Comprensorio comp = controller.getCompbyName(list.getSelectedValue());
                 initialize(comp);
                 pnl.setVisible(false);
             } else {

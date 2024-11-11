@@ -32,3 +32,4 @@ ID: 20; Richiesta: 10; OreRichieste: 16; Offerta: 6; OreOfferte: 11; Stato: aper
 ID: 20; Richiesta: 10; OreRichieste: 16; Offerta: 6; OreOfferte: 11; Stato: chiusa; IdFruitore: 0; Ora: 04-11-2024 21:35:23
 ID: 21; Richiesta: 6; OreRichieste: 11; Offerta: 10; OreOfferte: 16; Stato: aperta; IdFruitore: 0; Ora: 04-11-2024 21:35:23
 ID: 21; Richiesta: 6; OreRichieste: 11; Offerta: 10; OreOfferte: 16; Stato: chiusa; IdFruitore: 0; Ora: 04-11-2024 21:35:23
+ID: 22; Richiesta: 9; OreRichieste: 34; Offerta: 12; OreOfferte: 43; Stato: ritirata; IdFruitore: 2; Ora: 11-11-2024 10:01:18

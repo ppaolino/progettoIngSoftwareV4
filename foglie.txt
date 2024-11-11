@@ -12,3 +12,5 @@ ID: 10; Nome: ripetizioni di matematica per il triennio; Fattore: 1.3; ID fattor
 ID: 11; Nome: ripetizioni di inglese b1; Fattore: 1.0; ID fattore: 9
 ID: 12; Nome: ripetizioni di inglese b2; Fattore: 0.8; ID fattore: 9
 ID: 13; Nome: ripetizioni di informatica; Fattore: 2.0; ID fattore: 2
+ID: 14; Nome: ripetizioni di italiano; Fattore: 0.7; ID fattore: 11
+ID: 15; Nome: ripetizioni di matematica; Fattore: 0.6; ID fattore: 9
