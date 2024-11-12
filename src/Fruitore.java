@@ -18,7 +18,7 @@ public class Fruitore {
     private static final String FILE_F = "Fruitori.txt";
 
     /**
-     * Costruttore con ID specificato (per caricamento da file).
+     * Costruttore con ID specificato (per caricamento da file)
      *
      * Precondizioni:
      * - `username`, `password`, `mail`, `comp` non devono essere null.
