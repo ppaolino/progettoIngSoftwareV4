@@ -1,6 +1,7 @@
-Manuale utente
-Installazione
+#Manuale utente
+
 Introduzione
+
 Benvenuto nel manuale di installazione del progetto di ingegneria del software di Paolo Iore, Luca Ravelli e Giovanni Mapelli. Questo documento ti guiderà attraverso il processo di installazione, configurazione ed esecuzione del nostro programma scritto in Java. Assicurati di seguire attentamente ogni passo per evitare problemi.
 Requisiti di Sistema
 Hardware
