@@ -29,7 +29,7 @@ o	Apri il progetto nell'IDE.
 o	Esegui il programma utilizzando il pulsante Run.
 ## Disinstallazione
 Elimina la cartella di installazione di progettoIngSoftwareV4.
-Supporto Tecnico
+## Supporto Tecnico
 Per ulteriori informazioni o supporto tecnico, contatta:
 
 Email: l.ravelli002@studenti.unibs.it 
