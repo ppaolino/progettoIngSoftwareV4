@@ -2,3 +2,4 @@ paolo;paolo;
 username;password;
 giovanni;giovanni;
 luca;luca;
+giomap;giomap;

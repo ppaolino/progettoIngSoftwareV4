@@ -14,3 +14,6 @@ ID: 12; Nome: ripetizioni di inglese b2; Fattore: 0.8; ID fattore: 9
 ID: 13; Nome: ripetizioni di informatica; Fattore: 2.0; ID fattore: 2
 ID: 14; Nome: ripetizioni di italiano; Fattore: 0.7; ID fattore: 11
 ID: 15; Nome: ripetizioni di matematica; Fattore: 0.6; ID fattore: 9
+ID: 16; Nome: Foglia 1; Fattore: 1.0; ID fattore: 1
+ID: 17; Nome: Foglia 2; Fattore: 1.0; ID fattore: 16
+ID: 18; Nome: Foglia 3; Fattore: 1.0; ID fattore: 3

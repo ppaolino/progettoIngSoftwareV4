@@ -131,6 +131,16 @@ public final class LoginFruitore {
         lblCredenziali.setBounds(29, 10, 264, 37);
         pnlLogin.add(lblCredenziali);
 
+        JLabel lblUser = new JLabel("Username:");
+        lblUser.setFont(new Font("Tahoma", Font.PLAIN, 15));
+        lblUser.setBounds(29, 68, 88, 21);
+        pnlLogin.add(lblUser);
+        
+        JLabel lblPass = new JLabel("Password:");
+        lblPass.setFont(new Font("Tahoma", Font.PLAIN, 15));
+        lblPass.setBounds(29, 136, 88, 21);
+        pnlLogin.add(lblPass);
+
         JTextField txtUser = new JTextField();
         txtUser.setBounds(29, 99, 245, 27);
         pnlLogin.add(txtUser);

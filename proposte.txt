@@ -15,7 +15,7 @@ ID: 9; Richiesta: 6; OreRichieste: 9; Offerta: 7; OreOfferte: 9; Stato: chiusa; 
 ID: 10; Richiesta: 7; OreRichieste: 9; Offerta: 5; OreOfferte: 10; Stato: aperta; IdFruitore: 0; Ora: 04-11-2024 14:38:29
 ID: 10; Richiesta: 7; OreRichieste: 9; Offerta: 5; OreOfferte: 10; Stato: chiusa; IdFruitore: 0; Ora: 04-11-2024 14:38:29
 ID: 11; Richiesta: 13; OreRichieste: 10; Offerta: 12; OreOfferte: 20; Stato: aperta; IdFruitore: 0; Ora: 04-11-2024 14:39:51
-ID: 12; Richiesta: 12; OreRichieste: 20; Offerta: 11; OreOfferte: 16; Stato: aperta; IdFruitore: 0; Ora: 04-11-2024 14:40:04
+ID: 12; Richiesta: 12; OreRichieste: 20; Offerta: 11; OreOfferte: 16; Stato: ritirata; IdFruitore: 0; Ora: 04-11-2024 14:40:04
 ID: 13; Richiesta: 11; OreRichieste: 16; Offerta: 13; OreOfferte: 8; Stato: aperta; IdFruitore: 0; Ora: 04-11-2024 14:40:32
 ID: 13; Richiesta: 11; OreRichieste: 16; Offerta: 13; OreOfferte: 8; Stato: ritirata; IdFruitore: 0; Ora: 04-11-2024 14:40:32
 ID: 14; Richiesta: 1; OreRichieste: 10; Offerta: 2; OreOfferte: 8; Stato: aperta; IdFruitore: 0; Ora: 04-11-2024 14:41:02
@@ -33,3 +33,5 @@ ID: 20; Richiesta: 10; OreRichieste: 16; Offerta: 6; OreOfferte: 11; Stato: chiu
 ID: 21; Richiesta: 6; OreRichieste: 11; Offerta: 10; OreOfferte: 16; Stato: aperta; IdFruitore: 0; Ora: 04-11-2024 21:35:23
 ID: 21; Richiesta: 6; OreRichieste: 11; Offerta: 10; OreOfferte: 16; Stato: chiusa; IdFruitore: 0; Ora: 04-11-2024 21:35:23
 ID: 22; Richiesta: 9; OreRichieste: 34; Offerta: 12; OreOfferte: 43; Stato: ritirata; IdFruitore: 2; Ora: 11-11-2024 10:01:18
+ID: 23; Richiesta: 1; OreRichieste: 20; Offerta: 5; OreOfferte: 10; Stato: aperta; IdFruitore: 0; Ora: 11-11-2024 20:46:08
+ID: 24; Richiesta: 14; OreRichieste: 10; Offerta: 15; OreOfferte: 12; Stato: ritirata; IdFruitore: 0; Ora: 11-11-2024 20:46:38

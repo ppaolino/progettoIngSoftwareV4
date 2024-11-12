@@ -9,3 +9,6 @@ ID: 7; Nome: matematica; isRadice: false; tipo dei figli: foglie; Tipo: livello;
 ID: 8; Nome: inglese; isRadice: false; tipo dei figli: foglie; Tipo: livello; dominio-descrizione-id figlio associato: (b1 - inglese livello b1 - 11)(b2 - ingelse livello b2 - 12)
 ID: 9; Nome: informatica; isRadice: false; tipo dei figli: foglie; Tipo: livello; dominio-descrizione-id figlio associato: (base - introduzione all'informatica - 13)
 ID: 11; Nome: ripetizioni per scuola media; isRadice: true; tipo dei figli: foglie; Tipo: materia; dominio-descrizione-id figlio associato: (italiano - ripetizioni per la materia italiano - 14)(matematica - ripetizioni per la materia matematica - 15)
+ID: 12; Nome: Esempio; isRadice: true; tipo dei figli: non foglie; Tipo: 1; dominio-descrizione-id figlio associato: (Esempio sotto-categoria 1 - prova - 13)(2 - Esempio sotto-categoria 2 - 14)
+ID: 13; Nome: Esempio sotto-categoria 1; isRadice: false; tipo dei figli: foglie; Tipo: proava; dominio-descrizione-id figlio associato: (Foglia 1 - kjljl - 16)
+ID: 14; Nome: Esempio sotto-categoria 2; isRadice: false; tipo dei figli: foglie; Tipo: 1; dominio-descrizione-id figlio associato: (Foglia 2 - kljlkj - 17)(3 - Foglia 3 - 18)
